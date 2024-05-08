@@ -91,7 +91,7 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
     Returns:
     None
     """
-    print(f"Uploading {results_text,gif1,gif2}.......")
+    print(f"Uploading {results_text}.......")
 
     s3 = boto3.client('s3', region_name='us-east-1')
     result_prefix = base_key.replace('.mp4', '')  
