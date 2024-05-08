@@ -63,19 +63,19 @@ def process_video_file(s3_bucket: str, s3_key: str):
    
         # Call your video processing module here
         #results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
-        results_text, gif1, gif2 = 'test', "gif1", "gif2"
+        results_text, gif1, gif2 = 'test', None, None
         # Upload results back to another S3 bucket
         upload_results('ag-video-results', s3_key, results_text, gif1, gif2)
     
-    finally:
-        # Clean up: Delete the local video file
-        if os.path.exists(local_filename):
-            os.remove(local_filename)
-        # Clean up: Delete the local GIF files if they exist
-        if os.path.exists(gif1):
-            os.remove(gif1)
-        if os.path.exists(gif2):
-            os.remove(gif2)
+    # finally:
+    #     # Clean up: Delete the local video file
+    #     if os.path.exists(local_filename):
+    #         os.remove(local_filename)
+    #     # Clean up: Delete the local GIF files if they exist
+    #     if os.path.exists(gif1):
+    #         os.remove(gif1)
+    #     if os.path.exists(gif2):
+    #         os.remove(gif2)
 
 def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str, gif2: str):
     """
