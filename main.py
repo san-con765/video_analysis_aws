@@ -7,6 +7,7 @@ import numpy as np
 import mediapipe
 import time
 from typing import List, Tuple
+from urllib.parse import unquote_plus
 
 
 def process_messages(messages: List[dict], sqs_client: boto3.client):
@@ -28,8 +29,9 @@ def process_messages(messages: List[dict], sqs_client: boto3.client):
         body = json.loads(message['Body'])
         s3_key = body['Records'][0]['s3']['object']['key']
         s3_bucket = body['Records'][0]['s3']['bucket']['name']
-        
-        process_video_file(s3_bucket, s3_key)
+        object_key = unquote_plus(s3_key)
+
+        process_video_file(s3_bucket, object_key)
         
         sqs_client.delete_message(
             QueueUrl=sqs_queue_url,
