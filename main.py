@@ -49,18 +49,21 @@ def process_video_file(s3_bucket: str, s3_key: str):
     Returns:
     None
     """
-    s3 = boto3.client('s3', region_name='us-east-1')
-    local_filename = '/tmp/' + s3_key.split('/')[-1]
-    
-    s3.download_file(s3_bucket, s3_key, local_filename)
-    
+    try:
+        s3 = boto3.client('s3', region_name='us-east-1')
+        local_filename = '/tmp/' + s3_key.split('/')[-1]
+        
+        s3.download_file(s3_bucket, s3_key, local_filename)
+    except Exception as e:
+        print(f"Error downloading video: {e}")
     try:
         # Call your video processing module here
         #results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
         results_text, gif1, gif2 = 'test', None, None
         # Upload results back to another S3 bucket
         upload_results('ag-video-results', s3_key, results_text, gif1, gif2)
-
+    except Exception as e:
+            print(f"Error uploading video: {e}")
     finally:
         # Clean up: Delete the local video file
         os.remove(local_filename)
