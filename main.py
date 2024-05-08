@@ -42,42 +42,51 @@ def process_messages(messages: List[dict], sqs_client: boto3.client):
 def process_video_file(s3_bucket: str, s3_key: str):
     """
     Retrieves a video file from an S3 bucket, processes the video, uploads the results
-    (a text file and two GIFs) to another S3 bucket, and then cleans up by deleting
+    (a text file and potentially two GIFs) to another S3 bucket, and then cleans up by deleting
     the local video and GIF files to free up disk space.
 
     Args:
-    s3_bucket (str): The name of the S3 bucket where the video file is stored.
-    s3_key (str): The key of the video file in the S3 bucket.
+        s3_bucket (str): The name of the S3 bucket where the video file is stored.
+        s3_key (str): The key of the video file in the S3 bucket.
 
     Returns:
-    None
+        None
     """
+    local_filename = '/tmp/' + s3_key.split('/')[-1]
+    gif1 = gif2 = None  # Initialize to ensure scope beyond the try block
+
     print(f"Processing {s3_key}.......")
     try:
         s3 = boto3.client('s3', region_name='us-east-1')
-        local_filename = '/tmp/' + s3_key.split('/')[-1]
-        
         s3.download_file(s3_bucket, s3_key, local_filename)
+        print(f"Downloaded {s3_key} to {local_filename}")
     except Exception as e:
         print(f"Error downloading video: {e}")
-   
-        # Call your video processing module here
-        #results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
-        results_text, gif1, gif2 = 'test', None, None
-        # Upload results back to another S3 bucket
-        print(f"Processed {s3_key + '_results.txt'} sucessfully.......")
+        return
 
+    try:
+        # Placeholder for actual video processing module
+        # results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
+        results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
+        print(f"Processed {s3_key} successfully, results ready to upload.")
+
+        # Upload results back to another S3 bucket
         upload_results('ag-video-results', s3_key, results_text, gif1, gif2)
-    
+    except Exception as e:
+        print(f"Error processing/uploading results for {s3_key}: {e}")
     finally:
-        # Clean up: Delete the local video file
-        if os.path.exists(local_filename):
-            os.remove(local_filename)
-    #     # Clean up: Delete the local GIF files if they exist
-    #     if os.path.exists(gif1):
-    #         os.remove(gif1)
-    #     if os.path.exists(gif2):
-    #         os.remove(gif2)
+        # Clean up: Delete the local video file and any generated GIFs
+        cleanup_files([local_filename, gif1, gif2])
+
+def cleanup_files(files):
+    """ Removes specified files from the filesystem if they exist. """
+    for file_path in files:
+        if file_path and os.path.exists(file_path):
+            try:
+                os.remove(file_path)
+                print(f"Deleted {file_path}")
+            except Exception as e:
+                print(f"Failed to delete {file_path}: {e}")       
 
 def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str, gif2: str):
     """
