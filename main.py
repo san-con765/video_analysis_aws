@@ -94,7 +94,7 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
 
 if __name__ == '__main__':
     # The URL of the SQS queue from which messages are received
-    sqs_queue_url = 'your-sqs-queue-url'
+    sqs_queue_url = 'https://sqs.us-east-1.amazonaws.com/381492146683/video-uploaded-q'
     # Create an SQS client; specify the AWS region where your SQS queue is hosted
     sqs = boto3.client('sqs', region_name='us-east-1')
 
