@@ -23,6 +23,7 @@ def process_messages(messages: List[dict], sqs_client: boto3.client):
     None
     """
     for message in messages:
+        print(message)
         receipt_handle = message['ReceiptHandle']
         body = json.loads(message['Body'])
         s3_key = body['Records'][0]['s3']['object']['key']
