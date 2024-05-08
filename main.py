@@ -34,10 +34,10 @@ def process_messages(messages: List[dict], sqs_client: boto3.client):
 
         process_video_file(s3_bucket, object_key)
         
-        sqs_client.delete_message(
-            QueueUrl=sqs_queue_url,
-            ReceiptHandle=receipt_handle
-        )
+        # sqs_client.delete_message(
+        #     QueueUrl=sqs_queue_url,
+        #     ReceiptHandle=receipt_handle
+        # )
 
 def process_video_file(s3_bucket: str, s3_key: str):
     """
@@ -65,12 +65,14 @@ def process_video_file(s3_bucket: str, s3_key: str):
         #results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
         results_text, gif1, gif2 = 'test', None, None
         # Upload results back to another S3 bucket
+        print(f"Processed {s3_key + '_results.txt'} sucessfully.......")
+
         upload_results('ag-video-results', s3_key, results_text, gif1, gif2)
     
-    # finally:
-    #     # Clean up: Delete the local video file
-    #     if os.path.exists(local_filename):
-    #         os.remove(local_filename)
+    finally:
+        # Clean up: Delete the local video file
+        if os.path.exists(local_filename):
+            os.remove(local_filename)
     #     # Clean up: Delete the local GIF files if they exist
     #     if os.path.exists(gif1):
     #         os.remove(gif1)
@@ -91,18 +93,25 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
     Returns:
     None
     """
-    print(f"Uploading {results_text}.......")
+    
+    print(f"Uploading {base_key}.......")
 
     s3 = boto3.client('s3', region_name='us-east-1')
-    result_prefix = base_key.replace('.mp4', '')  
+    result_prefix = base_key.replace('.mp4', '')
+    folder_name = result_prefix + '/'
+    object_name = f"{folder_name}{result_prefix}"
+  
     try:
         # Write text results
-        s3.put_object(Bucket=bucket_name, Key=result_prefix + '_results.txt', Body=results_text)
+        s3.put_object(Bucket=bucket_name, Key=object_name + '_results.txt', Body=results_text)
         # Write gif results
         #s3.upload_file(gif1, bucket_name, result_prefix + '_1.gif')
         #3.upload_file(gif2, bucket_name, result_prefix + '_2.gif')
     except Exception as e:
             print(f"Error uploading video: {e}")
+    print(f"Uploaded {object_name + '_results.txt'} sucessfully.......")
+
+
 if __name__ == '__main__':
     # The URL of the SQS queue from which messages are received
     # Create SQS client
