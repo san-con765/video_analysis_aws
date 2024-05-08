@@ -63,7 +63,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
    
         # Call your video processing module here
         #results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
-        results_text, gif1, gif2 = 'test', None, None
+        results_text, gif1, gif2 = 'test', "gif1", "gif2"
         # Upload results back to another S3 bucket
         upload_results('ag-video-results', s3_key, results_text, gif1, gif2)
     
