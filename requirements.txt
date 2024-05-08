@@ -1,0 +1,6 @@
+boto3  # Update this version based on your current setup
+botocore  # This should match the version compatible with your boto3
+numpy  # Update this version based on your current setup
+mediapipe  # Update this version based on your current setup
+Pillow  # If you're using PIL for image processing, specify the version
+opencv-python  # If you decide to use OpenCV, specify the version
