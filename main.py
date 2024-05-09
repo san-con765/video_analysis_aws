@@ -8,6 +8,7 @@ import mediapipe
 import time
 from typing import List, Tuple
 from urllib.parse import unquote_plus
+from dotenv import load_dotenv
 
 
 def process_messages(messages: List[dict], sqs_client: boto3.client):
@@ -71,7 +72,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
         print(f"Processed {s3_key} successfully, results ready to upload.")
 
         # Upload results back to another S3 bucket
-        upload_results('ag-video-results', s3_key, results_text, gif1, gif2)
+        upload_results(S3_BUCKET_NAME, s3_key, results_text, gif1, gif2)
     except Exception as e:
         print(f"Error processing/uploading results for {s3_key}: {e}")
     finally:
@@ -120,6 +121,12 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
             print(f"Error uploading video: {e}")
     print(f"Uploaded {object_name + '_results.txt'} sucessfully.......")
 
+load_dotenv()
+
+# Access environment variables
+S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
+
 
 if __name__ == '__main__':
     # The URL of the SQS queue from which messages are received
@@ -127,7 +134,7 @@ if __name__ == '__main__':
     sqs = boto3.client('sqs', region_name='us-east-1')
 
     # Specify your queue URL
-    sqs_queue_url = 'https://sqs.us-east-1.amazonaws.com/381492146683/video-uploaded-q'
+    sqs_queue_url = SQS_QUEUE_URL
 
     # Continuously poll the queue for new messages
     while True:
