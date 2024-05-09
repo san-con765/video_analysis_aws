@@ -67,8 +67,8 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
     try:
         # Placeholder for actual video processing module
-        # results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
-        results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
+        results_text, gif1, gif2 = video_processing_module.process_video(local_filename)
+        #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
         print(f"Processed {s3_key} successfully, results ready to upload.")
 
         # Upload results back to another S3 bucket
