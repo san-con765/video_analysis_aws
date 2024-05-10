@@ -47,12 +47,13 @@ The architecture for the video processing system leverages various AWS services 
 
 ## Requirements
 
-- AWS CLI configured with administrator access
-- Python 3.9.16
-- Boto3
-- NumPy
-- MediaPipe (for video processing, not included in the dummy code)
-- OpenCV-Python (optional for advanced image/video manipulations)
+- boto3  
+- botocore  
+- numpy  
+- mediapipe  
+- Pillow  
+- opencv-python  
+- python-dotenv
 
 ## Setup Instructions
 
