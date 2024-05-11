@@ -96,7 +96,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
         # TEMP TESTING
         AnalysisArray = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
         print("Analysis Returned")
-        print(AnalysisArray[0])
+        # print(AnalysisArray[0])
 
         # CREATE ANALYSIS REVIEW AND CREATE TEXT
         # Expected format[found != 0, top = x, bottom = x, speed = x]

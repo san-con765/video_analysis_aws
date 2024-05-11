@@ -200,7 +200,7 @@ def AnalysePose(video_path):
         cv2.destroyAllWindows()
 
         print("Finish Analysis")
-        print(AnalysisArray[0])
+        # print(AnalysisArray[0])
 
         return AnalysisArray
 
