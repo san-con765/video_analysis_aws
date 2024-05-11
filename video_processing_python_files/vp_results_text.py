@@ -36,9 +36,6 @@ def textResults(results):
             result += "\n- 32Keep your... "
         elif results[3] == 3:
             result += "\n- 33Keep your... "
-
-
-
-        
+            
     return result
         
