@@ -47,13 +47,12 @@ The architecture for the video processing system leverages various AWS services 
 
 ## Requirements
 
-- boto3  
-- botocore  
-- numpy  
-- mediapipe  
-- Pillow  
-- opencv-python  
-- python-dotenv
+- AWS CLI configured with administrator access
+- Python 3.9.16
+- Boto3
+- NumPy
+- MediaPipe (for video processing, not included in the dummy code)
+- OpenCV-Python (optional for advanced image/video manipulations)
 
 ## Setup Instructions
 
@@ -77,8 +76,8 @@ The architecture for the video processing system leverages various AWS services 
 ### 3. **Clone the Repository**
    - Clone the project repository to your EC2 instance:
      ```bash
-     git clone https://github.com/san-con765/video_analysis_aws
-     cd video_analysis_aws
+     git clone https://github.com/yourusername/yourrepository.git
+     cd yourrepository
      ```
 
 ### 4. **Install Python Dependencies**
@@ -90,9 +89,8 @@ The architecture for the video processing system leverages various AWS services 
 ### 5. **Create .env File**
    - Create a `.env` file in the project root directory and add your AWS resource identifiers:
      ```bash
-     nano .env
-     AWS_S3_BUCKET_NAME=your-upload-bucket-name
-     AWS_SQS_QUEUE_URL=your-sqs-queue-url
+     echo "AWS_S3_BUCKET_NAME=your-upload-bucket-name" > .env
+     echo "AWS_SQS_QUEUE_URL=your-sqs-queue-url" >> .env
      ```
 
 ### 6. **Deploy and Run the Application**
