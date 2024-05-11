@@ -22,7 +22,7 @@ import video_processing_python_files.vp_gifCreater
 import video_processing_python_files.vp_analysePose 
 import video_processing_python_files.vp_runAnalysis
 import video_processing_python_files.vp_saveImages
-import video_processing_python_files.vp_results_text.
+import video_processing_python_files.vp_results_text
 
 
 def process_messages(messages: List[dict], sqs_client: boto3.client):
