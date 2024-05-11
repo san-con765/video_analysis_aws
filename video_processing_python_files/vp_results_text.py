@@ -1,8 +1,10 @@
 def textResults(results):
+    print("Run Process textResults")
     # Results in format results[found, top = x, bottom = x, speed = x]
 
     if results[0] == 0:
         result = "Unable to identify... \n \n Try to do ..."
+        return result
     else:
         total = results[1] + results[2] + results[3]
         if total == 1:
@@ -29,6 +31,8 @@ def textResults(results):
             result += "\n- 22Keep your... "
         elif results[2] == 3:
             result += "\n- 23Keep your... "
+        else:
+            results += "FAILED"
 
         if results[3] == 1:
             result += "\n- 31Keep your... "
@@ -36,6 +40,8 @@ def textResults(results):
             result += "\n- 32Keep your... "
         elif results[3] == 3:
             result += "\n- 33Keep your... "
+        else:
+            results += "FAILED"
             
     return result
         
