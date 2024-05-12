@@ -102,7 +102,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
         # result_text = []
         # result_text.append([[1][2][1][2]])
         print("Define result_text")
-        result_text = [[1][2][1][2]]
+        result_text = [[1],[2],[1],[2]]
 
 
         print("Run Text Results file")        
