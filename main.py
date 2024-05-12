@@ -100,8 +100,10 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
         # CREATE ANALYSIS REVIEW AND CREATE TEXT
         # Expected format[found != 0, top = x, bottom = x, speed = x]
+        result_text = []
+        result_text.append([[1][2][1][2]])
         
-        result_text = [[1][2][1][2]]
+
         print("Run Text Results file")        
         results_text = video_processing_python_files.vp_results_text.textResults(result_text)
         print("Run Text Results finished")
