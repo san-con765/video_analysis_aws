@@ -50,10 +50,10 @@ def process_messages(messages: List[dict], sqs_client: boto3.client):
 
         process_video_file(s3_bucket, object_key)
         
-        # sqs_client.delete_message(
-        #     QueueUrl=sqs_queue_url,
-        #     ReceiptHandle=receipt_handle
-        # )
+        sqs_client.delete_message(
+            QueueUrl=sqs_queue_url,
+            ReceiptHandle=receipt_handle
+        )
 
 def process_video_file(s3_bucket: str, s3_key: str):
     print("Run Process process_video_files")
