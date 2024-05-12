@@ -101,3 +101,40 @@ def create_gif(inputImagesPath, duration = 500):
 # frame_duration = 500
 
 # create_gif(image_paths, output_gif_path, frame_duration)
+
+
+def create_gif(inputImagesPath, duration = 500):
+    print("Run Process create_gif")
+    print("Items provided are")
+    for i in range(0, len(inputImagesPath)):
+        print(inputImagesPath[i])
+    images = []
+    print("Gif failure point 1")
+    
+    for path in inputImagesPath:
+        try:
+            img = Image.open(path).convert('RGB')
+            images.append(img)
+            print(f"Loaded {path}")
+        except Exception as e:
+            print(f"Failed to open {path}: {e}")
+    
+    # for path in inputImagesPath:
+    #     images.append(Image.open(path))
+    #             # Confirm correct syntax to return
+    print("Gif failure point 2")
+    # print(f"GIF saved successfully at {output_path}")
+    output_path = "/Users/seanryan/Desktop/Desktop - Sean's Quantum/Uni/2024_S1_FIT5120_PJ/Local ActiveAging/VideoAnalysis/output_frames/output.gif"
+    print("Gif failure point 3")
+    images[0].save(output_path, save_all=True, append_images=images[1:], optimize=False, duration=duration, loop=0)
+    print("Gif Created")
+    return "/home/ec2-user/video_analysis_aws/output.gif"
+    # print(f"Image {path} not found.")
+
+image_1 = "/Users/seanryan/Desktop/Desktop - Sean's Quantum/Uni/2024_S1_FIT5120_PJ/Local ActiveAging/VideoAnalysis/output_frames/0 max_frame.jpg"
+image_2 = "/Users/seanryan/Desktop/Desktop - Sean's Quantum/Uni/2024_S1_FIT5120_PJ/Local ActiveAging/VideoAnalysis/output_frames/1 max_frame.jpg"
+image_3 = "/Users/seanryan/Desktop/Desktop - Sean's Quantum/Uni/2024_S1_FIT5120_PJ/Local ActiveAging/VideoAnalysis/output_frames/1 min_frame.jpg"
+
+imageInput = [image_1, image_2, image_3]
+
+create_gif(imageInput)

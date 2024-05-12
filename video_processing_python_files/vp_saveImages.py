@@ -29,3 +29,5 @@ def SaveImage(image, filename, directory="/home/ec2-user/video_analysis_aws/"):
         print(f"Image saved at {save_path}")
     except:
         print("Provided image is not a valid numpy array.")
+
+
