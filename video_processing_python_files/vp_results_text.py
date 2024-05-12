@@ -7,28 +7,25 @@
 
 def textResults(results):
     print("Run Process textResults")
-    print("Test for ", results)
-    for i in range(0, len(results)):
-        print(results[i])
     # Results in format results[found, top = x, bottom = x, speed = x]
 
     if results[0] == 0:
-        result = "Unable to identify... \n \n Try to do ..."
+        result = "Error, unable to identify what is going on. :'("
         return result
     else:
         total = results[1] + results[2] + results[3]
         if total == 1:
             result = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility."
         elif total == 2:
-            result = "Score: 75/100 \n \n Great job! You're showing strong adherence to the recommended shoulder exercises"
+            result = "Score: 75/100 \n \n Great job! You're showing strong adherence to the recommended shoulder exercises."
         else:
-            result = "Score: 100/100 \n \n You're a Natural! You're showing strong adherence to the recommended shoulder exercises"
+            result = "Score: 100/100 \n \n You're a Natural! You're showing strong adherence to the recommended shoulder exercises."
 
         #  \n \n You’re currently completing the exercise too quickly! Consider slowing down and counting 3 seconds as you go up, and 3 seconds as you go down."
         
         
     # Review bttom of rep - fully extended arms
-    result += "\n To improve try to ..."
+    result += "\n \nTo improve try to:"
     if results[1] == 1:
         result += "\n- To improve try to ensure that your arms are completely straight when reaching towards the sky. The goal is to be close if not completely straight."
     elif results[1] == 2:
