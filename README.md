@@ -77,7 +77,7 @@ The architecture for the video processing system leverages various AWS services 
 ### 3. **Clone the Repository**
    - Clone the project repository to your EC2 instance:
      ```bash
-     git clone https://github.com/san-con765/video_analysis_aws
+     git clone https://github.com/san-con765/video_analysis_aws.git
      cd video_analysis_aws
      ```
 

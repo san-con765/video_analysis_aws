@@ -217,10 +217,10 @@ if __name__ == '__main__':
                     try:
                         process_video_file(s3_bucket, object_key)
                         
-                        # sqs_client.delete_message(
-                        #     QueueUrl=sqs_queue_url,
-                        #     ReceiptHandle=receipt_handle
-                        # )
+                        sqs.delete_message(
+                            QueueUrl=sqs_queue_url,
+                            ReceiptHandle=receipt_handle
+                        )
                     except Exception as e:
                         print(f"Something went wrong with {object_key}: {e}")
                         error_occurred = True # Error flag
