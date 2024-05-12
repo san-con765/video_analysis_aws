@@ -24,37 +24,6 @@ import video_processing_python_files.vp_runAnalysis
 import video_processing_python_files.vp_saveImages
 import video_processing_python_files.vp_results_text
 
-
-def process_messages(messages: List[dict], sqs_client: boto3.client):
-    print("Run Process Process_messages")
-    """
-    Processes messages retrieved from an SQS queue, extracting S3 bucket and key details,
-    downloading and processing the corresponding video files, and then deleting the messages
-    from the queue to prevent reprocessing.
-
-    Args:
-    messages (List[dict]): A list of message dictionaries received from SQS.
-    sqs_client (boto3.client): A Boto3 SQS client used to delete messages after processing.
-
-    Returns:
-    None
-    """
-    for message in messages:
-        print(message)
-        receipt_handle = message['ReceiptHandle']
-        body = json.loads(message['Body'])
-        s3_key = body['Records'][0]['s3']['object']['key']
-        s3_bucket = body['Records'][0]['s3']['bucket']['name']
-        # Handles the formating of the sqs message
-        object_key = unquote_plus(s3_key)
-
-        process_video_file(s3_bucket, object_key)
-        
-        # sqs_client.delete_message(
-        #     QueueUrl=sqs_queue_url,
-        #     ReceiptHandle=receipt_handle
-        # )
-
 def process_video_file(s3_bucket: str, s3_key: str):
     print("Run Process process_video_files")
     """
@@ -69,6 +38,8 @@ def process_video_file(s3_bucket: str, s3_key: str):
     Returns:
         None
     """
+    error_occurred = False # Error flag
+
     local_filename = '/tmp/' + s3_key.split('/')[-1]
     gif1 = gif2 = None  # Initialize to ensure scope beyond the try block
 
@@ -151,9 +122,13 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
     except Exception as e:
         print(f"Error processing/uploading results for {s3_key}: {e}")
+        error_occurred = True
         
-    finally:
-
+    finally: 
+        if error_occurred:
+            fail_result = "Something went wrong, try again later."
+            error_gif = "error_gif/try_again_gif.gif"
+            upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)   
         # Clean up: Delete the local video file and any generated GIFs
         cleanup_files([local_filename]) #, results_gif])
 
@@ -233,12 +208,27 @@ if __name__ == '__main__':
                 MaxNumberOfMessages=10,  # Retrieve up to 10 messages in one request
                 WaitTimeSeconds=20       # Wait up to 20 seconds for a message if the queue is initially empty
             )
-
             # Check if there are any new messages
             messages = response.get('Messages', [])
             if messages:
                 # Process each message using the process_messages function
-                process_messages(messages, sqs)
+                for message in messages:
+                    receipt_handle = message['ReceiptHandle']
+                    body = json.loads(message['Body'])
+                    s3_key = body['Records'][0]['s3']['object']['key'] # File name
+                    s3_bucket = body['Records'][0]['s3']['bucket']['name'] # Upload bucket name
+                    # Handles the formating of the sqs message
+                    object_key = unquote_plus(s3_key)
+                    try:
+                        process_video_file(s3_bucket, object_key)
+                        
+                        # sqs.delete_message(
+                        #     QueueUrl=sqs_queue_url,
+                        #     ReceiptHandle=receipt_handle
+                        # )
+                    except Exception as e:
+                        print(f"Something went wrong with {object_key}: {e}")
+
         except Exception as e:
-            print(f"Error polling SQS: {e}")
+            print(f"Something went wrong: {e}")
             time.sleep(10)  # Wait a bit before retrying to avoid flooding logs with error messages
