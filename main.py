@@ -50,10 +50,10 @@ def process_messages(messages: List[dict], sqs_client: boto3.client):
 
         process_video_file(s3_bucket, object_key)
         
-        sqs_client.delete_message(
-            QueueUrl=sqs_queue_url,
-            ReceiptHandle=receipt_handle
-        )
+        # sqs_client.delete_message(
+        #     QueueUrl=sqs_queue_url,
+        #     ReceiptHandle=receipt_handle
+        # )
 
 def process_video_file(s3_bucket: str, s3_key: str):
     print("Run Process process_video_files")
@@ -108,7 +108,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
         print("Run Text Results file")        
         results_text = video_processing_python_files.vp_results_text.textResults(result_text)
         print("Run Text Results finished")
-        results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
+        # results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
         
         ############################
 
