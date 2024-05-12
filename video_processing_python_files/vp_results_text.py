@@ -15,11 +15,11 @@ def textResults(results):
     else:
         total = results[1] + results[2] + results[3]
         if total == 1:
-            result = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility."
+            result = "Score: 50/100 \n \nGood job! You're on your way to improve your shoulder mobility."
         elif total == 2:
-            result = "Score: 75/100 \n \n Great job! You're showing strong adherence to the recommended shoulder exercises."
+            result = "Score: 75/100 \n \nGreat job! You're showing strong adherence to the recommended shoulder exercises."
         else:
-            result = "Score: 100/100 \n \n You're a Natural! You're showing strong adherence to the recommended shoulder exercises."
+            result = "Score: 100/100 \n \nYou're a Natural! You're showing strong adherence to the recommended shoulder exercises."
 
         #  \n \n You’re currently completing the exercise too quickly! Consider slowing down and counting 3 seconds as you go up, and 3 seconds as you go down."
         
