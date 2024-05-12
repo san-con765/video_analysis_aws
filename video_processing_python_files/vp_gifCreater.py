@@ -32,6 +32,7 @@ def create_gif(inputImagesPath, duration = 500):
         print(inputImagesPath[i])
     images = []
     print("Gif failure point 1")
+    
     for path in inputImagesPath:
         try:
             img = Image.open(path).convert('RGB')
