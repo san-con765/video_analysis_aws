@@ -7,6 +7,9 @@
 
 def textResults(results):
     print("Run Process textResults")
+    print("Test for ", results)
+    for i in range(0, len(results)):
+        print(results[i])
     # Results in format results[found, top = x, bottom = x, speed = x]
 
     if results[0] == 0:
