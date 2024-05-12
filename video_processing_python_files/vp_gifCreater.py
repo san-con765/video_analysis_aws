@@ -33,8 +33,16 @@ def create_gif(inputImagesPath, duration = 500):
     images = []
     print("Gif failure point 1")
     for path in inputImagesPath:
-        images.append(Image.open(path))
-                # Confirm correct syntax to return
+        try:
+            img = Image.open(path).convert('RGB')
+            images.append(img)
+            print(f"Loaded {path}")
+        except Exception as e:
+            print(f"Failed to open {path}: {e}")
+    
+    # for path in inputImagesPath:
+    #     images.append(Image.open(path))
+    #             # Confirm correct syntax to return
     print("Gif failure point 2")
     # print(f"GIF saved successfully at {output_path}")
     output_path = "/home/ec2-user/video_analysis_aws/output.gif"
