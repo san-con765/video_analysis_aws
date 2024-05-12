@@ -31,12 +31,14 @@ def create_gif(inputImagesPath, duration = 500):
     for i in range(0, len(inputImagesPath)):
         print(inputImagesPath[i])
     images = []
+    print("Gif failure point 1")
     for path in inputImagesPath:
         images.append(Image.open(path))
                 # Confirm correct syntax to return
-    
+    print("Gif failure point 2")
     # print(f"GIF saved successfully at {output_path}")
     output_path = "/home/ec2-user/video_analysis_aws"
+    print("Gif failure point 3")
     images[0].save(output_path, save_all=True, append_images=images[1:], optimize=False, duration=duration, loop=0)
     print("Gif Created")
     return "/home/ec2-user/video_analysis_aws/output.gif"

@@ -133,11 +133,13 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
             # Converts Images into gif
             # create_gif(image_paths, output_path, duration = 500)
+            print("Try to create gif")
             results_gif = video_processing_python_files.vp_gifCreater.create_gif(images, "/home/ec2-user/video_analysis_aws/Output_Test.gif")
             
             # results_gif = "/home/ec2-user/video_analysis_aws/output.gif"
 
             # List files to be cleaned up
+            print("Try to clean up")
             clean_up_files = images
             cleanup_files.append(results_gif)
 
