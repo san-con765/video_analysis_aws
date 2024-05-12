@@ -73,69 +73,52 @@ def process_video_file(s3_bucket: str, s3_key: str):
         # result_text = []
         # result_text.append([[1][2][1][2]])
         print("Define result_text")
-        result_text = [1,2,1,2]
+        result_text = [[1],[2],[1],[2]]
 
 
         print("Run Text Results file")        
         results_text = video_processing_python_files.vp_results_text.textResults(result_text)
         print("Run Text Results finished")
-        # results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
+        results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
         
         ############################
 
 
         print("Analysis Returned: ", local_filename)
         # Save 3 images
-        try:
-            #Save images
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[0], filename="image_1.jpg")
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
+        video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[0], filename="image_1.jpg")
+        video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
+        video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
 
-            #Create gif
-            # Combine Images
-            # images = [AnalysisArray[0], AnalysisArray[1], AnalysisArray[2]]
-            dir = "/home/ec2-user/video_analysis_aws"
-            images = [dir+"/image_1.jpg", dir+"/image_2.jpg", dir+"/image_3.jpg"]
+        # Combine Images
+        # images = [AnalysisArray[0], AnalysisArray[1], AnalysisArray[2]]
+        dir = "/home/ec2-user/video_analysis_aws"
+        images = [dir+"/image_1.jpg", dir+"/image_2.jpg", dir+"/image_3.jpg"]
 
-            # Error processing/uploading results for Test Video4.mp4: name 'mp' is not defined
-            # Error polling SQS: name 'results_text' is not defined
+        # Error processing/uploading results for Test Video4.mp4: name 'mp' is not defined
+        # Error polling SQS: name 'results_text' is not defined
 
 
-            # Converts Images into gif
-            # create_gif(image_paths, output_path, duration = 500)
-            print("Try to create gif")
-            results_gif = video_processing_python_files.vp_gifCreater.create_gif(images, "/home/ec2-user/video_analysis_aws/Output_Test.gif")
-            
-            # results_gif = "/home/ec2-user/video_analysis_aws/output.gif"
+        # Converts Images into gif
+        # create_gif(image_paths, output_path, duration = 500)
+        results_gif = video_processing_python_files.vp_gifCreater.create_gif(images, "/home/ec2-user/video_analysis_aws/Output_Test.gif")
+        
+        results_gif = "/home/ec2-user/video_analysis_aws/output.gif"
 
-            # List files to be cleaned up
-            print("Try to clean up")
-            clean_up_files = images
-            cleanup_files.append(results_gif)
+        #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
+        print(f"Processed {s3_key} successfully, results ready to upload.")
 
-
-            #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
-            print(f"Processed {s3_key} successfully, results ready to upload.")
-
-            # To reference text file based on results:
-            # results_text = "You're doing great"
-            # TO BE UPDATED
-
-            # Upload results back to another S3 bucket
-            print("Upload Results")
-            upload_results(S3_BUCKET_NAME, s3_key, results_text, results_gif)
-
-            #Clean
-            cleanup_files(clean_up_files)
-
-            
-        except:
-            print("Failure to save images")
+        #Write results to text file
 
         
+        
+        # To reference text file based on results:
+        # results_text = "You're doing great"
+        # TO BE UPDATED
 
-
+        # Upload results back to another S3 bucket
+        print("Upload Results")
+        upload_results(S3_BUCKET_NAME, s3_key, results_text, results_gif)
 
     except Exception as e:
         print(f"Error processing/uploading results for {s3_key}: {e}")
@@ -143,6 +126,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
         
     finally: 
         if error_occurred:
+            print(f"Error Ocurred processing{s3_key}")
             fail_result = "Something went wrong, try again later."
             error_gif = "error_gif/try_again_gif.gif"
             upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)   
