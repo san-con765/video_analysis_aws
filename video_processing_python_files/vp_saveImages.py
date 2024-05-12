@@ -21,7 +21,7 @@ import numpy as np
 
 def SaveImage(image, filename, directory="/home/ec2-user/video_analysis_aws/"):
     print("Run Process SaveImage")
-    
+
     # if isinstance(image, np.ndarray):
     try:
         save_path = os.path.join(directory, filename)
