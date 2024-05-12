@@ -166,7 +166,7 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
     print("gif1 " + gif1)
 
     s3 = boto3.client('s3', region_name='us-east-1')
-    result_prefix = base_key.replace('.mp4', '')
+    result_prefix = base_key[:base_key.rfind('.')]
     folder_name = result_prefix + '/'
     object_name = f"{folder_name}{result_prefix}"
   
