@@ -29,28 +29,28 @@ def textResults(results):
     if results[1] == 1:
         result += "\n- To improve try to ensure that your arms are completely straight when reaching towards the sky. The goal is to be close if not completely straight."
     elif results[1] == 2:
-        result += "\n- You're doing a great job, but your arms are slightly bent at the top of the repition, try to ensure they are almost if not completely straight."
+        result += "\n- You're doing a great job, but your arms are slightly bent at the top of the repetition, try to ensure they are almost if not completely straight."
     elif results[1] == 3:
         result += "\n- Great job extending your arms, doing great!"
     else:
-        # result += "Something went wrong identifying the bottom of the repition"
+        # result += "Something went wrong identifying the bottom of the repetition"
         print("Something went wrong, currently receiving a ",results[1], "output for the bottom of rep which should not be possible." )
 
     # Review bottom of rep - arms accurately bent
     if results[2] == 1:
-        result += "\n- To improve try to ensure that your arms are at 90 degree at the bottom of the repition."
+        result += "\n- To improve try to ensure that your arms are at 90 degree at the bottom of the repetition."
     elif results[2] == 2:
         result += "\n- Good effort but try to make sure you're bringing your arms further down and are closer to a ring angle at the bottom of the rep."
     elif results[2] == 3:
-        result += "\n- Awesome job, the bottom of the repition is exactly what we are looking for!"
+        result += "\n- Awesome job, the bottom of the repetition is exactly what we are looking for!"
     else:
         # result += "FAILED"
         print("Something went wrong, currently receiving a ",results[2], "output for the bottom of rep which should not be possible." )
 
     if results[3] == 1:     # Too fast
-        result += "\n- Try to slow down during the repition, it should be around 2 seconds going up and 2 seconds going down."
+        result += "\n- Try to slow down during the repetition, it should be around 2 seconds going up and 2 seconds going down."
     elif results[3] == 2:   # Too slow
-        result += "\n- Try to speed up a little during the repition, it should be around 2 seconds going up and 2 seconds going down."
+        result += "\n- Try to speed up a little during the repetition, it should be around 2 seconds going up and 2 seconds going down."
     elif results[3] == 3:   # Just right
         result += "\n- Perfect! Moving just at the right speed!"
     else:
