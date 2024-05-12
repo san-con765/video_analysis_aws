@@ -27,6 +27,9 @@ import io
 # Create gif based on image paths
 def create_gif(inputImagesPath, duration = 500):
     print("Run Process create_gif")
+    print("Items provided are")
+    for i in range(0, len(inputImagesPath)):
+        print(inputImagesPath[i])
     images = []
     for path in inputImagesPath:
         images.append(Image.open(path))
