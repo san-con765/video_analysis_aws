@@ -38,6 +38,8 @@ def process_video_file(s3_bucket: str, s3_key: str):
     Returns:
         None
     """
+    error_occurred = False # Error flag
+
     local_filename = '/tmp/' + s3_key.split('/')[-1]
     gif1 = gif2 = None  # Initialize to ensure scope beyond the try block
 
@@ -120,9 +122,13 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
     except Exception as e:
         print(f"Error processing/uploading results for {s3_key}: {e}")
+        error_occurred = True
         
-    finally:
-
+    finally: 
+        if error_occurred:
+            fail_result = "Something went wrong, try again later."
+            error_gif = "error_gif/try_again_gif.gif"
+            upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)   
         # Clean up: Delete the local video file and any generated GIFs
         cleanup_files([local_filename]) #, results_gif])
 
@@ -213,7 +219,6 @@ if __name__ == '__main__':
                     s3_bucket = body['Records'][0]['s3']['bucket']['name'] # Upload bucket name
                     # Handles the formating of the sqs message
                     object_key = unquote_plus(s3_key)
-                    error_occurred = False # Error flag
                     try:
                         process_video_file(s3_bucket, object_key)
                         
@@ -223,12 +228,6 @@ if __name__ == '__main__':
                         )
                     except Exception as e:
                         print(f"Something went wrong with {object_key}: {e}")
-                        error_occurred = True # Error flag
-
-                    if error_occurred:
-                        fail_result = "Something went wrong, try again later."
-                        error_gif = "error_gif/try_again_gif.gif"
-                        upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)   
 
         except Exception as e:
             print(f"Something went wrong: {e}")
