@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 
 import cv2
 import mediapipe as mp
+import re
 
 # Local modules to be include
 import video_processing_python_files.vp_gifCreater
@@ -58,9 +59,11 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
     print("gif1 " + gif1)
 
     s3 = boto3.client('s3', region_name='us-east-1')
-    result_prefix = base_key.replace('.mp4', '')
+    # result_prefix = base_key.replace('.mp4', '')
+    result_prefix = re.sub(r'\.(mp4|mov)$', '', base_key)
     folder_name = result_prefix + '/'
     object_name = f"{folder_name}{result_prefix}"
+
   
     try:
         # Write text results
@@ -98,10 +101,10 @@ def process_messages(messages: List[dict], sqs_client: boto3.client):
 
         process_video_file(s3_bucket, object_key)
         
-        # sqs_client.delete_message(
-        #     QueueUrl=sqs_queue_url,
-        #     ReceiptHandle=receipt_handle
-        # )
+        sqs_client.delete_message(
+            QueueUrl=sqs_queue_url,
+            ReceiptHandle=receipt_handle
+        )
 
 def process_video_file(s3_bucket: str, s3_key: str):
     print("Run Process process_video_files")
@@ -143,19 +146,20 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
         # TEMP TESTING
         
-        AnalysisArray, Results = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
+        AnalysisArray, result_text = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
         print("Analysis Returned")
 
         # CREATE ANALYSIS REVIEW AND CREATE TEXT
         # Expected format[found != 0, top = x, bottom = x, speed = x]
         # result_text = []
         # result_text.append([[1][2][1][2]])
+        
         print("Define result_text")
-        result_text = [1,2,1,2]
+        # result_text = [1,2,1,2]
 
 
         print("Run Text Results file")        
-        results_text = video_processing_python_files.vp_results_text.textResults(result_text)
+        results_text_output = video_processing_python_files.vp_results_text.textResults(result_text)
         print("Run Text Results finished")
         # results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
         
@@ -167,12 +171,14 @@ def process_video_file(s3_bucket: str, s3_key: str):
         try:
             #Save images
             
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
+            # print("Save Images 1")
+            # video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
+            # video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
 
             #Create gif
             # Combine Images
             # images = [AnalysisArray[0], AnalysisArray[1], AnalysisArray[2]]
+            print("Start to create gif")
             dir = "/home/ec2-user/video_analysis_aws"
             images = [dir+"/image_1.jpg", dir+"/image_2.jpg", dir+"/image_3.jpg"]
 
@@ -198,7 +204,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
             # Upload results back to another S3 bucket
             print("Upload Results")
-            upload_results(S3_BUCKET_NAME, s3_key, results_text, results_gif)
+            upload_results(S3_BUCKET_NAME, s3_key, results_text_output, results_gif)
 
             #Clean
             # List files to be cleaned up
@@ -220,12 +226,15 @@ def process_video_file(s3_bucket: str, s3_key: str):
         cleanup_files([local_filename]) #, results_gif])
 
 
-
+#ONLINE
 load_dotenv()
 
 # Access environment variables
 S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
 SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
+
+# #LOCAL
+# videoExample = "/Users/seanryan/Downloads"
 
 
 
