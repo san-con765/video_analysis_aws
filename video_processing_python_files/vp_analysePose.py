@@ -289,15 +289,21 @@ def AnalysePose(video_path):
 
         # Elbow Location Shoulder Location
         print(AnalysisArray[resultsArrayOutput[0]][3])
+        print("Test length of ResultsArray ", len(ResultsArray))
+        
 
         try:
             
             if resultsArrayOutput[0] == 0:
                 return [0, 1, 1, 1]
             else:
+                print("Test length of each frame ")
                 frame1 = resultsArrayOutput[0]
                 frame2 = resultsArrayOutput[0] + resultsArrayOutput[1]
                 frame3 = resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2]
+                print(frame1)
+                print(frame2)
+                print(frame3)
 
                 # Scenario 1 - Failure to detect user
                 
@@ -312,15 +318,17 @@ def AnalysePose(video_path):
                     ResultsText.append(2)
                 else:
                     ResultsText.append(1)
+                print("Resulted in ", ResultsText)
 
                 # Scenario 3 - Bottom of arm
                 print("Bottom arm test = ", ResultsArray[frame3][0])
-                if ResultsArray[frame2][0] <110 & ResultsArray[frame2][0] > 90:
+                if ResultsArray[frame3][0] <110 & ResultsArray[frame3][0] > 90:
                     ResultsText.append(3)
-                elif ResultsArray[frame2][0] >109:
+                elif ResultsArray[frame3][0] >109:
                     ResultsText.append(2)
                 else:
                     ResultsText.append(1)
+                print("Resulted in ", ResultsText)
 
                 # Scenario 4 - time
                 speed = frame2 + frame3 - frame1
@@ -331,6 +339,7 @@ def AnalysePose(video_path):
                     ResultsText.append(2)
                 else:
                     ResultsText.append(3)
+                print("Resulted in ", ResultsText)
         except Exception as e:
                 # #print("Flag 9")
                 print("SOMETHING HERE FAILED")
