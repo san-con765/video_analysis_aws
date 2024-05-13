@@ -319,9 +319,9 @@ def AnalysePose(video_path):
 
                 # Scenario 4 - time
                 print("Speed Test = ", resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1])
-                if  resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1] < 60 : #Too Fast
+                if  resultsArrayOutput[1] + resultsArrayOutput[2] - resultsArrayOutput[0] < 60 : #Too Fast
                     ResultsText.append(1)
-                elif resultsArrayOutput[1] + resultsArrayOutput[1] - resultsArrayOutput[2] > 90: #Too Slow
+                elif resultsArrayOutput[2] + resultsArrayOutput[0] - resultsArrayOutput[1] > 90: #Too Slow
                     ResultsText.append(2)
                 else:
                     ResultsText.append(3)
