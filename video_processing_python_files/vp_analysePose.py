@@ -318,7 +318,7 @@ def AnalysePose(video_path):
                     ResultsText.append(1)
 
                 # Scenario 4 - time
-                if resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] < 120 : #Too Fast
+                if  resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1] < 100 : #Too Fast
                     ResultsText.append(1)
                 elif resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] > 150: #Too Slow
                     ResultsText.append(2)
