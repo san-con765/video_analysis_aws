@@ -331,8 +331,11 @@ def AnalysePose(video_path):
                     ResultsText.append(2)
                 else:
                     ResultsText.append(3)
-        except:
-            print("SOMETHING HERE FAILED")
+        except Exception as e:
+                # #print("Flag 9")
+                print("SOMETHING HERE FAILED")
+                print(e)
+            
 
         print("Results Text = ",ResultsText)
 
