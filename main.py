@@ -15,6 +15,7 @@ from dotenv import load_dotenv
 
 import cv2
 import mediapipe as mp
+import re
 
 # Local modules to be include
 import video_processing_python_files.vp_gifCreater
@@ -58,9 +59,11 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
     print("gif1 " + gif1)
 
     s3 = boto3.client('s3', region_name='us-east-1')
-    result_prefix = base_key.replace('.mp4', '')
+    # result_prefix = base_key.replace('.mp4', '')
+    result_prefix = re.sub(r'\.(mp4|mov)$', '', base_key)
     folder_name = result_prefix + '/'
     object_name = f"{folder_name}{result_prefix}"
+
   
     try:
         # Write text results
