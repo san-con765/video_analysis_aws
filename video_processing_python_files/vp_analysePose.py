@@ -102,6 +102,7 @@ def AnalyseRepetitions(AnalysisArray):
         return 0
     video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_1.jpg")
     ResultsArray.append(CheckPoint)
+    print("Results Array = ",ResultsArray)
     
     print("Begin Analysis")
     AnalysisArray = AnalysisArray[CheckPoint:len(AnalysisArray) -1 ]
@@ -119,6 +120,7 @@ def AnalyseRepetitions(AnalysisArray):
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray,SaveFrame, filename="image_2.jpg")
             # ReptitionCounter +=1
             ResultsArray.append(CheckPoint)
+            print("Results Array = ",ResultsArray)
             GoingUp = False
             AnalysisArray = AnalysisArray[CheckPoint:len(AnalysisArray)-1 ]
             print("Going up done)")
@@ -133,6 +135,7 @@ def AnalyseRepetitions(AnalysisArray):
                 return 0
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_3.jpg")
             ResultsArray.append(CheckPoint)
+            print("Results Array = ",ResultsArray)
             print("Going down done)")
             
             
