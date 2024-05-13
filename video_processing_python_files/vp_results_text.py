@@ -14,9 +14,9 @@ def textResults(results):
         return result
     else:
         total = results[1] + results[2] + results[3]
-        if total == 1:
+        if total < 5:
             result = "Score: 50/100 \n \nGood job! You're on your way to improve your shoulder mobility."
-        elif total == 2:
+        elif total < 8 :
             result = "Score: 75/100 \n \nGreat job! You're showing strong adherence to the recommended shoulder exercises."
         else:
             result = "Score: 100/100 \n \nYou're a Natural! You're showing strong adherence to the recommended shoulder exercises."

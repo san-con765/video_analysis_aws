@@ -289,13 +289,13 @@ def AnalysePose(video_path):
         print(AnalysisArray[resultsArrayOutput[0]][3])
 
         try:
-            resultsArrayOutput = 0
-            if resultsArrayOutput == 0:
-                return 0
+            
+            if resultsArrayOutput[0] == 0:
+                return [0, 1, 1, 1]
             else:
 
                 # Scenario 1 - Failure to detect user
-                if resultsArrayOutput == 1:
+                if resultsArrayOutput[0] == 1:
                     ResultsText.append(1)
                     return AnalysisArray, ResultsText
                 else:
