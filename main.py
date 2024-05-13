@@ -183,14 +183,14 @@ def process_video_file(s3_bucket: str, s3_key: str):
             # create_gif(image_paths, output_path, duration = 500)
             print("Try to create gif")
             results_gif = video_processing_python_files.vp_gifCreater.create_gif(images, "/home/ec2-user/video_analysis_aws/output.gif")
+            images.append(results_gif)
             
-            # results_gif = "/home/ec2-user/video_analysis_aws/output.gif"
 
             # List files to be cleaned up
             print("Try to clean up")
-    
+            
             cleanup_files(images)
-            cleanup_files(results_gif)
+ 
 
             #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
             print(f"Processed {s3_key} successfully, results ready to upload.")
@@ -209,8 +209,6 @@ def process_video_file(s3_bucket: str, s3_key: str):
         except:
             print("Failure to save images")
 
-        
-
 
 
     except Exception as e:
@@ -220,7 +218,6 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
         # Clean up: Delete the local video file and any generated GIFs
         cleanup_files([local_filename]) #, results_gif])
-
 
 
 
