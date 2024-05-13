@@ -98,7 +98,7 @@ The architecture for the video processing system leverages various AWS services 
 ### 6. **Deploy and Run the Application**
    - Run the application on your EC2 instance:
      ```bash
-     python3 main.py
+     nohup python3 main.py &
      ```
 
 ## Usage
