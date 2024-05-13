@@ -119,3 +119,4 @@ def create_gif(inputImagesPath, output_path, durationGif = 500):
 # imageInput = [image_1, image_2, image_3]
 
 # create_gif(imageInput)
+
