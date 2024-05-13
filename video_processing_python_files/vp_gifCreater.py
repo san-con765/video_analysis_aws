@@ -48,8 +48,13 @@ def create_gif(inputImagesPath, duration = 500):
     # print(f"GIF saved successfully at {output_path}")
     output_path = "/home/ec2-user/video_analysis_aws/output.gif"
     print("Gif failure point 3")
-    images[0].save(output_path, save_all=True, append_images=images[1:], optimize=False, duration=duration, loop=0)
-    print("Gif Created")
+    try:
+        images[0].save(output_path, save_all=True, append_images=images[1:], optimize=False, duration=duration, loop=0)
+        print("Gif Created")
+    except Exception as e:
+            print(f"Failed to Save gif {output_path}: {e}")
+            
+    
     return "/home/ec2-user/video_analysis_aws/output.gif"
     # print(f"Image {path} not found.")
 
