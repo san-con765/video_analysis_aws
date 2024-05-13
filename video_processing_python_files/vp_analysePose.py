@@ -159,6 +159,7 @@ def AnalysePose(video_path):
     print("Initialise MP")
 
     AnalysisArray = []
+    ResultsArray = []
 
     cap = cv2.VideoCapture(video_path)
 
@@ -234,6 +235,7 @@ def AnalysePose(video_path):
                 
                 
                 AnalysisArray.append([image, angle, shoulder, elbow, wrist])
+                ResultsArray.append([angle, shoulder, elbow, wrist])
                 #print("Flag 8")
 
 
@@ -293,6 +295,9 @@ def AnalysePose(video_path):
             if resultsArrayOutput[0] == 0:
                 return [0, 1, 1, 1]
             else:
+                frame1 = resultsArrayOutput[0]
+                frame2 = resultsArrayOutput[0] + resultsArrayOutput[1]
+                frame3 = resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2]
 
                 # Scenario 1 - Failure to detect user
                 
@@ -300,28 +305,29 @@ def AnalysePose(video_path):
                 # return AnalysisArray, ResultsText
                     
                 # Scenario 2 - Identify top of arm
-                print("Top arm test = ", AnalysisArray[resultsArrayOutput[1]][1])
-                if AnalysisArray[resultsArrayOutput[1]][1] <20:
+                print("Top arm test = ", ResultsArray[frame2][0])
+                if ResultsArray[frame2][0] <20:
                     ResultsText.append(3)
-                elif AnalysisArray[resultsArrayOutput[1]][1] <50:
+                elif ResultsArray[frame2][0] <50:
                     ResultsText.append(2)
                 else:
                     ResultsText.append(1)
 
                 # Scenario 3 - Bottom of arm
-                print("Bottom arm test = ", AnalysisArray[resultsArrayOutput[2]][1])
-                if AnalysisArray[resultsArrayOutput[2]][1] <110 & AnalysisArray[resultsArrayOutput[2]][3] > 90:
+                print("Bottom arm test = ", ResultsArray[frame3][0])
+                if ResultsArray[frame2][0] <110 & ResultsArray[frame2][0] > 90:
                     ResultsText.append(3)
-                elif AnalysisArray[resultsArrayOutput[2]][1] >109:
+                elif ResultsArray[frame2][0] >109:
                     ResultsText.append(2)
                 else:
                     ResultsText.append(1)
 
                 # Scenario 4 - time
-                print("Speed Test = ", resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1])
-                if  resultsArrayOutput[1] + resultsArrayOutput[2] - resultsArrayOutput[0] < 60 : #Too Fast
+                speed = frame2 + frame3 - frame1
+                print("Speed Test = ", speed)
+                if  speed < 60 : #Too Fast
                     ResultsText.append(1)
-                elif resultsArrayOutput[2] + resultsArrayOutput[0] - resultsArrayOutput[1] > 90: #Too Slow
+                elif speed > 90: #Too Slow
                     ResultsText.append(2)
                 else:
                     ResultsText.append(3)
