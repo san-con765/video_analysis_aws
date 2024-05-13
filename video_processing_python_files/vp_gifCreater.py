@@ -25,7 +25,7 @@ import io
 
 ######################################################
 # Create gif based on image paths
-def create_gif(inputImagesPath, duration = 500):
+def create_gif(inputImagesPath, output_path, durationGif = 500):
     print("Run Process create_gif")
     print("Items provided are")
     for i in range(0, len(inputImagesPath)):
@@ -46,10 +46,11 @@ def create_gif(inputImagesPath, duration = 500):
     #             # Confirm correct syntax to return
     print("Gif failure point 2")
     # print(f"GIF saved successfully at {output_path}")
-    output_path = "/home/ec2-user/video_analysis_aws/output.gif"
+    # output_path = 
     print("Gif failure point 3")
     try:
-        images[0].save(output_path, save_all=True, append_images=images[1:], optimize=False, duration=duration, loop=0)
+        # images[0].save(output_path, save_all=True, append_images=images[1:], optimize=False, duration=duration, loop=0)
+        images[0].save(output_path, save_all=True, append_images=images[1:], duration=durationGif, loop=0)
         print("Gif Created")
     except Exception as e:
             print(f"Failed to Save gif {output_path}: {e}")
