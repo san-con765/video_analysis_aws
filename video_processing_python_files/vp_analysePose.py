@@ -17,8 +17,8 @@ def IdentifyFirstRep(AnalysisArray):
         if wrist_y < shoulder_y:
             # Return the frame (image) and the index
             print("First rep at ", x)
-            return AnalysisArray[x][0], x
-    return AnalysisArray[x][0], 0
+            return x, x
+    return 0, 0
     
 # Identify the max height of the reptition
 # Is done by identifying when the wrist is at the highest point
@@ -30,7 +30,7 @@ def IdentifyMaxofRep(AnalysisArray):
     max_index = -1
 
     # print("Test Now")
-    for x in range(0,len(AnalysisArray) - 11, 5): 
+    for x in range(0,len(AnalysisArray) - 11, 10): 
         print("Test Begins")
         print("Max Test ", x, " / ", len(AnalysisArray)) 
         # SaveImage(AnalysisArray[x][0], "max Compare 1 " + "wrist_1 x=" + str(x) + ".jpg")
@@ -46,7 +46,7 @@ def IdentifyMaxofRep(AnalysisArray):
             max_frame = AnalysisArray[x][0]
             max_index = x
             # print(x) 
-            return max_frame, x+5
+            return x - 10, x+5
         # else:
             # print("wrist Test = True")
     
@@ -82,7 +82,7 @@ def IdentifyMinofRep(AnalysisArray):
             max_frame = AnalysisArray[x][0]
             max_index = x
             # print(x) 
-            return max_frame, x+5
+            return x-10, x+5
         # else:
             # print("wrist Test = True")
     
@@ -95,10 +95,11 @@ def AnalyseRepetitions(AnalysisArray):
     ResultsArray = []
     GoingUp = True
     SaveFrame, CheckPoint = IdentifyFirstRep(AnalysisArray)
-    if CheckPoint == -1:
+    if CheckPoint == 0:
         return 0
     video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_1.jpg")
-    # ResultsArray.append(SaveFrame)
+    ResultsArray.append(CheckPoint)
+    
     print("Begin Analysis")
     AnalysisArray = AnalysisArray[CheckPoint:len(AnalysisArray) -1 ]
     
@@ -114,6 +115,7 @@ def AnalyseRepetitions(AnalysisArray):
                 return 0
             video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_2.jpg")
             # ReptitionCounter +=1
+            ResultsArray.append(CheckPoint)
             GoingUp = False
             AnalysisArray = AnalysisArray[CheckPoint:len(AnalysisArray)-1 ]
             print("Going up done)")
@@ -127,9 +129,10 @@ def AnalyseRepetitions(AnalysisArray):
             if CheckPoint >= len(AnalysisArray) -1 :
                 return 0
             video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_3.jpg")
+            ResultsArray.append(CheckPoint)
             print("Going down done)")
             return 1
-            CheckPoint = 1
+            
             
         
         print("Up to ", CheckPoint, " / ", len(AnalysisArray) -1 )
@@ -159,7 +162,7 @@ def AnalysePose(video_path):
     with mp_pose.Pose(min_detection_confidence=0.5, min_tracking_confidence=0.5) as pose:
         print("Run MP")
         ##print("Flag 1")
-        while cap.isOpened():
+        while cap.isOpened() or frame_number <300:
 
 
             #TESTING
@@ -223,6 +226,7 @@ def AnalysePose(video_path):
                 
                 AnalysisArray.append([image, angle, shoulder, elbow, wrist])
                 #print("Flag 8")
+
 
             
             except Exception as e:

@@ -19,13 +19,13 @@ import numpy as np
 
 
 
-def SaveImage(image, filename, directory="/home/ec2-user/video_analysis_aws/"):
+def SaveImage(Array, Frame, filename, directory="/home/ec2-user/video_analysis_aws/"):
     print("Run Process SaveImage")
 
     # if isinstance(image, np.ndarray):
     try:
         save_path = os.path.join(directory, filename)
-        cv2.imwrite(save_path, image[0])
+        cv2.imwrite(save_path, Array[Frame][0])
         print(f"Image saved at {save_path}")
     except:
         print("Provided image is not a valid numpy array.")
