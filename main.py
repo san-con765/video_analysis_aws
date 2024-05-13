@@ -223,15 +223,15 @@ def process_video_file(s3_bucket: str, s3_key: str):
         cleanup_files([local_filename]) #, results_gif])
 
 
-# #ONLINE
-# load_dotenv()
+#ONLINE
+load_dotenv()
 
-# # Access environment variables
-# S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-# SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
+# Access environment variables
+S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
 
-#LOCAL
-videoExample = "/Users/seanryan/Downloads"
+# #LOCAL
+# videoExample = "/Users/seanryan/Downloads"
 
 
 
