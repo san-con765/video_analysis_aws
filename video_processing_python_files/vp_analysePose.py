@@ -119,7 +119,7 @@ def AnalyseRepetitions(AnalysisArray):
                 return 0
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray,SaveFrame, filename="image_2.jpg")
             # ReptitionCounter +=1
-            ResultsArray.append(CheckPoint)
+            ResultsArray.append(CheckPoint + ResultsArray[0])
             print("Results Array = ",ResultsArray)
             GoingUp = False
             AnalysisArray = AnalysisArray[CheckPoint:len(AnalysisArray)-1 ]
@@ -134,7 +134,7 @@ def AnalyseRepetitions(AnalysisArray):
             if CheckPoint >= len(AnalysisArray) -1 :
                 return 0
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_3.jpg")
-            ResultsArray.append(CheckPoint)
+            ResultsArray.append(CheckPoint+ ResultsArray[1])
             print("Results Array = ",ResultsArray)
             print("Going down done)")
             
@@ -182,7 +182,7 @@ def AnalysePose(video_path):
             ret, frame = cap.read()
             
             #Cuts at frame > 200 for processing issues
-            if not ret or frame_number > 100:
+            if not ret or frame_number > 150:
                 print("End of video.")
                 #print("Flag 3")
                 break
