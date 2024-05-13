@@ -300,19 +300,19 @@ def AnalysePose(video_path):
                 # return AnalysisArray, ResultsText
                     
                 # Scenario 2 - Identify top of arm
-                print("Top arm test = ", AnalysisArray[resultsArrayOutput[1]][2])
-                if AnalysisArray[resultsArrayOutput[1]][2] <20:
+                print("Top arm test = ", AnalysisArray[resultsArrayOutput[1]][1])
+                if AnalysisArray[resultsArrayOutput[1]][1] <20:
                     ResultsText.append(3)
-                elif AnalysisArray[resultsArrayOutput[1]][2] <50:
+                elif AnalysisArray[resultsArrayOutput[1]][1] <50:
                     ResultsText.append(2)
                 else:
                     ResultsText.append(1)
 
                 # Scenario 3 - Bottom of arm
-                print("Bottom arm test = ", AnalysisArray[resultsArrayOutput[2]][3])
-                if AnalysisArray[resultsArrayOutput[2]][3] <110 & AnalysisArray[resultsArrayOutput[2]][3] > 90:
+                print("Bottom arm test = ", AnalysisArray[resultsArrayOutput[2]][1])
+                if AnalysisArray[resultsArrayOutput[2]][1] <110 & AnalysisArray[resultsArrayOutput[2]][3] > 90:
                     ResultsText.append(3)
-                elif AnalysisArray[resultsArrayOutput[2]][3] >109:
+                elif AnalysisArray[resultsArrayOutput[2]][1] >109:
                     ResultsText.append(2)
                 else:
                     ResultsText.append(1)
