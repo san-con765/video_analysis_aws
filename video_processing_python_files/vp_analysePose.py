@@ -322,7 +322,7 @@ def AnalysePose(video_path):
 
                 # Scenario 3 - Bottom of arm
                 print("Bottom arm test = ", ResultsArray[frame3][0])
-                if ResultsArray[frame3][0] <110 & ResultsArray[frame3][0] > 90:
+                if 90 < ResultsArray[frame3][0] <110:
                     ResultsText.append(3)
                 elif ResultsArray[frame3][0] >109:
                     ResultsText.append(2)
