@@ -295,11 +295,9 @@ def AnalysePose(video_path):
             else:
 
                 # Scenario 1 - Failure to detect user
-                if resultsArrayOutput[0] == 1:
-                    ResultsText.append(1)
-                    return AnalysisArray, ResultsText
-                else:
-                    ResultsText.append(0)
+                
+                ResultsText.append(1)
+                # return AnalysisArray, ResultsText
                     
                 # Scenario 2 - Identify top of arm
                 print("Top arm test = ", AnalysisArray[resultsArrayOutput[1]][2])
