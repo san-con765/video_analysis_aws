@@ -118,7 +118,7 @@ def AnalyseRepetitions(AnalysisArray):
             SaveFrame, CheckPoint = IdentifyMaxofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
             if CheckPoint > len(AnalysisArray) -2 :
                 return 0
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray,SaveFrame, filename="image_2.jpg")
+            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray,SaveFrame, filename="image_3.jpg")
             # ReptitionCounter +=1
             ResultsArray.append(CheckPoint + ResultsArray[0])
             print("Results Array = ",ResultsArray)
@@ -134,7 +134,7 @@ def AnalyseRepetitions(AnalysisArray):
             SaveFrame, CheckPoint = IdentifyMinofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
             if CheckPoint >= len(AnalysisArray) -1 :
                 return 0
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_3.jpg")
+            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_2.jpg")
             ResultsArray.append(CheckPoint+ ResultsArray[1])
             print("Results Array = ",ResultsArray)
             print("Going down done)")
@@ -318,9 +318,9 @@ def AnalysePose(video_path):
                     ResultsText.append(1)
 
                 # Scenario 4 - time
-                if  resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1] < 100 : #Too Fast
+                if  resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1] < 60 : #Too Fast
                     ResultsText.append(1)
-                elif resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] > 150: #Too Slow
+                elif resultsArrayOutput[1] + resultsArrayOutput[1] - resultsArrayOutput[2] > 90: #Too Slow
                     ResultsText.append(2)
                 else:
                     ResultsText.append(3)
