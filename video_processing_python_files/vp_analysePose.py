@@ -134,6 +134,8 @@ def AnalyseRepetitions(AnalysisArray):
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_3.jpg")
             ResultsArray.append(CheckPoint)
             print("Going down done)")
+            
+            
             return ResultsArray
             
             

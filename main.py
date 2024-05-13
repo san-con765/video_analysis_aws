@@ -150,6 +150,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
         # Expected format[found != 0, top = x, bottom = x, speed = x]
         # result_text = []
         # result_text.append([[1][2][1][2]])
+        
         print("Define result_text")
         result_text = [1,2,1,2]
 
@@ -167,12 +168,14 @@ def process_video_file(s3_bucket: str, s3_key: str):
         try:
             #Save images
             
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
+            # print("Save Images 1")
+            # video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
+            # video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
 
             #Create gif
             # Combine Images
             # images = [AnalysisArray[0], AnalysisArray[1], AnalysisArray[2]]
+            print("Start to create gif")
             dir = "/home/ec2-user/video_analysis_aws"
             images = [dir+"/image_1.jpg", dir+"/image_2.jpg", dir+"/image_3.jpg"]
 
@@ -220,12 +223,15 @@ def process_video_file(s3_bucket: str, s3_key: str):
         cleanup_files([local_filename]) #, results_gif])
 
 
+# #ONLINE
+# load_dotenv()
 
-load_dotenv()
+# # Access environment variables
+# S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
+# SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
 
-# Access environment variables
-S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
-SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
+#LOCAL
+videoExample = "/Users/seanryan/Downloads"
 
 
 
