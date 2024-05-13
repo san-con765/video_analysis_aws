@@ -264,7 +264,9 @@ def AnalysePose(video_path):
         # print(AnalysisArray[0])
 
         ##USE ANALYSIS ARRAY TO CAPTURE EACH FRAME
-        resultsArrayOutput = AnalyseRepetitions(AnalysisArray)
+        resultsArrayOutput = (AnalyseRepetitions(AnalysisArray))
+        print("Testing point 2")
+        
 
         # Used to generate response text
         ResultsText = []
