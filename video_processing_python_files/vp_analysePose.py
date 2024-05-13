@@ -11,6 +11,8 @@ import video_processing_python_files.vp_calculateAngle
 def IdentifyFirstRep(AnalysisArray):
     print("Run Process identifyFirstRep")
     print("Identify First Rep")
+
+    #Go through each item in the array - first rep is identified when the wrist is put above the shoulder.
     for x in range(0,len(AnalysisArray)):
         wrist_y = AnalysisArray[x][4][1]
         shoulder_y = AnalysisArray[x][2][1]
@@ -18,6 +20,7 @@ def IdentifyFirstRep(AnalysisArray):
             # Return the frame (image) and the index
             print("First rep at ", x)
             return x, x
+    # This will cause an error message - if time is available include information around 
     return 0, 0
     
 # Identify the max height of the reptition
@@ -97,7 +100,7 @@ def AnalyseRepetitions(AnalysisArray):
     SaveFrame, CheckPoint = IdentifyFirstRep(AnalysisArray)
     if CheckPoint == 0:
         return 0
-    video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_1.jpg")
+    video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_1.jpg")
     ResultsArray.append(CheckPoint)
     
     print("Begin Analysis")
@@ -113,7 +116,7 @@ def AnalyseRepetitions(AnalysisArray):
             SaveFrame, CheckPoint = IdentifyMaxofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
             if CheckPoint > len(AnalysisArray) -2 :
                 return 0
-            video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_2.jpg")
+            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray,SaveFrame, filename="image_2.jpg")
             # ReptitionCounter +=1
             ResultsArray.append(CheckPoint)
             GoingUp = False
@@ -128,7 +131,7 @@ def AnalyseRepetitions(AnalysisArray):
             SaveFrame, CheckPoint = IdentifyMinofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
             if CheckPoint >= len(AnalysisArray) -1 :
                 return 0
-            video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_3.jpg")
+            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_3.jpg")
             ResultsArray.append(CheckPoint)
             print("Going down done)")
             return 1
