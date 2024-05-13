@@ -302,6 +302,7 @@ def AnalysePose(video_path):
                     ResultsText.append(0)
                     
                 # Scenario 2 - Identify top of arm
+                print("Top arm test = ", AnalysisArray[resultsArrayOutput[1]][2])
                 if AnalysisArray[resultsArrayOutput[1]][2] <20:
                     ResultsText.append(3)
                 elif AnalysisArray[resultsArrayOutput[1]][2] <50:
@@ -310,6 +311,7 @@ def AnalysePose(video_path):
                     ResultsText.append(1)
 
                 # Scenario 3 - Bottom of arm
+                print("Bottom arm test = ", AnalysisArray[resultsArrayOutput[2]][3])
                 if AnalysisArray[resultsArrayOutput[2]][3] <110 & AnalysisArray[resultsArrayOutput[2]][3] > 90:
                     ResultsText.append(3)
                 elif AnalysisArray[resultsArrayOutput[2]][3] >109:
@@ -318,6 +320,7 @@ def AnalysePose(video_path):
                     ResultsText.append(1)
 
                 # Scenario 4 - time
+                print("Speed Test = ", resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1])
                 if  resultsArrayOutput[2] + resultsArrayOutput[3] - resultsArrayOutput[1] < 60 : #Too Fast
                     ResultsText.append(1)
                 elif resultsArrayOutput[1] + resultsArrayOutput[1] - resultsArrayOutput[2] > 90: #Too Slow
