@@ -265,6 +265,6 @@ def AnalysePose(video_path):
 
 
 #LOCAL
-videoExample = "/Users/seanryan/Downloads"
-AnalysePose(videoExample)
+# videoExample = "/Users/seanryan/Downloads"
+# AnalysePose(videoExample)
 
