@@ -41,6 +41,7 @@ def create_gif(inputImagesPath, duration = 500):
         except Exception as e:
             print(f"Failed to open {path}: {e}")
     
+    
     # for path in inputImagesPath:
     #     images.append(Image.open(path))
     #             # Confirm correct syntax to return
