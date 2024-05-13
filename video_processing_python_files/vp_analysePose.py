@@ -137,7 +137,7 @@ def AnalyseRepetitions(AnalysisArray):
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_2.jpg")
             ResultsArray.append(CheckPoint+ ResultsArray[1])
             print("Results Array = ",ResultsArray)
-            print("Going down done)")
+            print("Going down done")
             
             
             return ResultsArray
@@ -277,7 +277,7 @@ def AnalysePose(video_path):
         # Print checkpoint Locations
         print(resultsArrayOutput)
 
-    ############### AnalysisArray === [image, angle, shoulder, elbow, wrist]) ###############
+        ############### AnalysisArray === [image, angle, shoulder, elbow, wrist]) ###############
 
         # Print elbow angle
         print(AnalysisArray[resultsArrayOutput[0]][1])

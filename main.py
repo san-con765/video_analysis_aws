@@ -143,7 +143,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
         # TEMP TESTING
         
-        AnalysisArray, Results = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
+        AnalysisArray, result_text = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
         print("Analysis Returned")
 
         # CREATE ANALYSIS REVIEW AND CREATE TEXT
@@ -152,11 +152,11 @@ def process_video_file(s3_bucket: str, s3_key: str):
         # result_text.append([[1][2][1][2]])
         
         print("Define result_text")
-        result_text = [1,2,1,2]
+        # result_text = [1,2,1,2]
 
 
         print("Run Text Results file")        
-        results_text = video_processing_python_files.vp_results_text.textResults(result_text)
+        results_text_output = video_processing_python_files.vp_results_text.textResults(result_text)
         print("Run Text Results finished")
         # results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
         
@@ -201,7 +201,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
             # Upload results back to another S3 bucket
             print("Upload Results")
-            upload_results(S3_BUCKET_NAME, s3_key, results_text, results_gif)
+            upload_results(S3_BUCKET_NAME, s3_key, results_text_output, results_gif)
 
             #Clean
             # List files to be cleaned up
