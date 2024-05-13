@@ -134,7 +134,7 @@ def AnalyseRepetitions(AnalysisArray):
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_3.jpg")
             ResultsArray.append(CheckPoint)
             print("Going down done)")
-            return 1
+            return ResultsArray
             
             
         
@@ -177,7 +177,7 @@ def AnalysePose(video_path):
             ret, frame = cap.read()
             
             #Cuts at frame > 200 for processing issues
-            if not ret or frame_number > 200:
+            if not ret or frame_number > 100:
                 print("End of video.")
                 #print("Flag 3")
                 break
@@ -259,9 +259,51 @@ def AnalysePose(video_path):
         # print(AnalysisArray[0])
 
         ##USE ANALYSIS ARRAY TO CAPTURE EACH FRAME
-        AnalyseRepetitions(AnalysisArray)
+        resultsArrayOutput = AnalyseRepetitions(AnalysisArray)
 
-        ResultsText = [1,2,2,2]
+        # Used to generate response text
+        ResultsText = []
+
+        # If results did not finish return 0
+        print("SCenario Testing")
+        resultsArrayOutput = 0
+        if resultsArrayOutput == 0:
+            return 0
+        else:
+
+            # Scenario 1 - Failure to detect user
+            if AnalysisArray[resultsArrayOutput[0]][0][0][0][0][0] == 0:
+                ResultsText.append(0)
+                return AnalysisArray, ResultsText
+            else:
+                ResultsText.append(1)
+                 
+            # Scenario 2 - Identify top of arm
+            if AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
+                ResultsText.append(1)
+            elif AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
+                ResultsText.append(2)
+            else:
+                ResultsText.append(3)
+
+            # Scenario 3 - Bottom of arm
+            if AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
+                ResultsText.append(1)
+            elif AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
+                ResultsText.append(2)
+            else:
+                ResultsText.append(3)
+
+            # Scenario 4 - time
+            if resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] < 120 : #Too Fast
+                ResultsText.append(1)
+            elif resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] > 150: #Too Slow
+                ResultsText.append(2)
+            else:
+                ResultsText.append(3)
+
+
+
 
         return AnalysisArray, ResultsText
         # AnalysisArray (need to find a way of providing the three frames required), Results (in format of [1,2,2,2])
