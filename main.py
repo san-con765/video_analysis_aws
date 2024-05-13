@@ -142,7 +142,8 @@ def process_video_file(s3_bucket: str, s3_key: str):
         print("Local File Name = ", local_filename)
 
         # TEMP TESTING
-        AnalysisArray = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
+        
+        AnalysisArray, Results = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
         print("Analysis Returned")
 
         # CREATE ANALYSIS REVIEW AND CREATE TEXT
@@ -165,7 +166,7 @@ def process_video_file(s3_bucket: str, s3_key: str):
         # Save 3 images
         try:
             #Save images
-            video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[0], filename="image_1.jpg")
+            
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
             video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
 

@@ -1,6 +1,7 @@
 import mediapipe as mp
 import cv2
 import os
+import video_processing_python_files.vp_saveImages
 
 # Local modules to be include
 import video_processing_python_files.vp_calculateAngle
@@ -87,6 +88,47 @@ def IdentifyMinofRep(AnalysisArray):
     return 0, len(AnalysisArray) -1
     
     
+def AnalyseRepetitions(AnalysisArray):
+    #Initiation of start Analysis
+    ResultsArray = []
+    SaveFrame, CheckPoint = IdentifyFirstRep(AnalysisArray)
+    video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_1.jpg")
+    # ResultsArray.append(SaveFrame)
+    print("Begin Analysis")
+    AnalysisArray = AnalysisArray[CheckPoint:len(AnalysisArray) -1 ]
+    
+    while CheckPoint != 0:
+        
+        if GoingUp:
+            print("")
+            print("Test Going Up")
+            print("CheckPoint = ", CheckPoint)
+            print("len(AnalysisArray)-1  = ", len(AnalysisArray)-1 )
+            SaveFrame, CheckPoint = IdentifyMaxofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
+            # if CheckPoint == len(AnalysisArray) -1 :
+            #     return ReptitionCounter
+            video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_2.jpg")
+            # ReptitionCounter +=1
+            GoingUp = False
+            AnalysisArray = AnalysisArray[CheckPoint:len(AnalysisArray)-1 ]
+            print("Going up done)")
+        else:
+            print("")
+            print("Test Going Down")
+            print("CheckPoint = " ,CheckPoint)
+            print("len(AnalysisArray)-1  = ", len(AnalysisArray)-1 )
+            print("Test")
+            SaveFrame, CheckPoint = IdentifyMinofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
+            # if CheckPoint == len(AnalysisArray) -1 :               
+            #     return ReptitionCounter
+            video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_3.jpg")
+            
+            CheckPoint = 1
+            print("Going down done)")
+        
+        print("Up to ", CheckPoint, " / ", len(AnalysisArray) -1 )
+
+    return 1
 
 
 
@@ -202,7 +244,12 @@ def AnalysePose(video_path):
         print("Finish Analysis")
         # print(AnalysisArray[0])
 
+        ##USE ANALYSIS ARRAY TO CAPTURE EACH FRAME
+        AnalyseRepetitions(AnalysisArray)
+
+
         return AnalysisArray
+        # AnalysisArray (need to find a way of providing the three frames required), Results (in format of [1,2,2,2])
 
 
 
