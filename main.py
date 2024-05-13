@@ -140,9 +140,9 @@ def process_video_file(s3_bucket: str, s3_key: str):
 
             # List files to be cleaned up
             print("Try to clean up")
-            clean_up_files = images
-            cleanup_files.append(results_gif)
-
+    
+            cleanup_files(images)
+            cleanup_files(results_gif)
 
             #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
             print(f"Processed {s3_key} successfully, results ready to upload.")
@@ -156,7 +156,6 @@ def process_video_file(s3_bucket: str, s3_key: str):
             upload_results(S3_BUCKET_NAME, s3_key, results_text, results_gif)
 
             #Clean
-            cleanup_files(clean_up_files)
 
             
         except:
