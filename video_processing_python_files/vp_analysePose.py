@@ -331,8 +331,6 @@ def AnalysePose(video_path):
 
 
 
-
-        print("End Scenario Testing")
         return AnalysisArray, ResultsText
         # AnalysisArray (need to find a way of providing the three frames required), Results (in format of [1,2,2,2])
 
