@@ -268,6 +268,10 @@ def AnalysePose(video_path):
 
         # If results did not finish return 0
         print("Scenario Testing")
+        print(resultsArrayOutput)
+        print(AnalysisArray[resultsArrayOutput][1])
+        print(AnalysisArray[resultsArrayOutput][2])
+        print(AnalysisArray[resultsArrayOutput][3])
         # try:
         #     resultsArrayOutput = 0
         #     if resultsArrayOutput == 0:
