@@ -101,6 +101,7 @@ def AnalyseRepetitions(AnalysisArray):
     if CheckPoint == 0:
         return 0
     video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray, SaveFrame, filename="image_1.jpg")
+    ResultsArray.append(1)
     ResultsArray.append(CheckPoint)
     print("Results Array = ",ResultsArray)
     
@@ -272,48 +273,61 @@ def AnalysePose(video_path):
 
         # If results did not finish return 0
         print("Scenario Testing")
+        
+        # Print checkpoint Locations
         print(resultsArrayOutput)
+
+    ############### AnalysisArray === [image, angle, shoulder, elbow, wrist]) ###############
+
+        # Print elbow angle
         print(AnalysisArray[resultsArrayOutput[0]][1])
-        print(AnalysisArray[resultsArrayOutput[1]][2])
-        print(AnalysisArray[resultsArrayOutput[2]][3])
-        # try:
-        #     resultsArrayOutput = 0
-        #     if resultsArrayOutput == 0:
-        #         return 0
-        #     else:
 
-        #         # Scenario 1 - Failure to detect user
-        #         if AnalysisArray[resultsArrayOutput[0]][0][0][0][0][0] == 0:
-        #             ResultsText.append(0)
-        #             return AnalysisArray, ResultsText
-        #         else:
-        #             ResultsText.append(1)
+        # Print Shoulder Location
+        print(AnalysisArray[resultsArrayOutput[0]][2])
+
+        # Elbow Location Shoulder Location
+        print(AnalysisArray[resultsArrayOutput[0]][3])
+
+        try:
+            resultsArrayOutput = 0
+            if resultsArrayOutput == 0:
+                return 0
+            else:
+
+                # Scenario 1 - Failure to detect user
+                if resultsArrayOutput == 1:
+                    ResultsText.append(1)
+                    return AnalysisArray, ResultsText
+                else:
+                    ResultsText.append(0)
                     
-        #         # Scenario 2 - Identify top of arm
-        #         if AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
-        #             ResultsText.append(1)
-        #         elif AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
-        #             ResultsText.append(2)
-        #         else:
-        #             ResultsText.append(3)
+                # Scenario 2 - Identify top of arm
+                if AnalysisArray[resultsArrayOutput[1]][2] <20:
+                    ResultsText.append(3)
+                elif AnalysisArray[resultsArrayOutput[1]][2] <50:
+                    ResultsText.append(2)
+                else:
+                    ResultsText.append(1)
 
-        #         # Scenario 3 - Bottom of arm
-        #         if AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
-        #             ResultsText.append(1)
-        #         elif AnalysisArray[resultsArrayOutput[0]][1][0][0][0][0] == 0:
-        #             ResultsText.append(2)
-        #         else:
-        #             ResultsText.append(3)
+                # Scenario 3 - Bottom of arm
+                if AnalysisArray[resultsArrayOutput[2]][3] <110 & AnalysisArray[resultsArrayOutput[2]][3] > 90:
+                    ResultsText.append(3)
+                elif AnalysisArray[resultsArrayOutput[2]][3] >109:
+                    ResultsText.append(2)
+                else:
+                    ResultsText.append(1)
 
-        #         # Scenario 4 - time
-        #         if resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] < 120 : #Too Fast
-        #             ResultsText.append(1)
-        #         elif resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] > 150: #Too Slow
-        #             ResultsText.append(2)
-        #         else:
-        #             ResultsText.append(3)
-        # except:
-        #     print("SOMETHING HERE FAILED")
+                # Scenario 4 - time
+                if resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] < 120 : #Too Fast
+                    ResultsText.append(1)
+                elif resultsArrayOutput[0] + resultsArrayOutput[1] + resultsArrayOutput[2] > 150: #Too Slow
+                    ResultsText.append(2)
+                else:
+                    ResultsText.append(3)
+        except:
+            print("SOMETHING HERE FAILED")
+
+        print("Results Text = ",ResultsText)
 
 
 
