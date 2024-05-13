@@ -322,7 +322,7 @@ def AnalysePose(video_path):
 
                 # Scenario 3 - Bottom of arm
                 print("Bottom arm test = ", ResultsArray[frame3][0])
-                if 45 < ResultsArray[frame3][0] <110:
+                if 55 < ResultsArray[frame3][0] <110:
                     ResultsText.append(3)
                 elif ResultsArray[frame3][0] >109:
                     ResultsText.append(2)
@@ -335,7 +335,7 @@ def AnalysePose(video_path):
                 print("Speed Test = ", speed)
                 if  speed < 60 : #Too Fast
                     ResultsText.append(1)
-                elif speed > 150: #Too Slow
+                elif speed > 145: #Too Slow
                     ResultsText.append(2)
                 else:
                     ResultsText.append(3)
