@@ -312,9 +312,9 @@ def AnalysePose(video_path):
                     
                 # Scenario 2 - Identify top of arm
                 print("Top arm test = ", ResultsArray[frame2][0])
-                if ResultsArray[frame2][0] <20:
+                if ResultsArray[frame2][0] <60:
                     ResultsText.append(3)
-                elif ResultsArray[frame2][0] <50:
+                elif ResultsArray[frame2][0] <70:
                     ResultsText.append(2)
                 else:
                     ResultsText.append(1)
