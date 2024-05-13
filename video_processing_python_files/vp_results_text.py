@@ -24,6 +24,7 @@ def textResults(results):
         #  \n \n You’re currently completing the exercise too quickly! Consider slowing down and counting 3 seconds as you go up, and 3 seconds as you go down."
         
         
+        
     # Review bttom of rep - fully extended arms
     if results[1] == 1:
         result += "\n- To improve try to ensure that your arms are completely straight when reaching towards the sky. The goal is to be close if not completely straight."
