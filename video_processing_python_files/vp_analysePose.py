@@ -16,7 +16,9 @@ def IdentifyFirstRep(AnalysisArray):
         shoulder_y = AnalysisArray[x][2][1]
         if wrist_y < shoulder_y:
             # Return the frame (image) and the index
+            print("First rep at ", x)
             return AnalysisArray[x][0], x
+    return AnalysisArray[x][0], 0
     
 # Identify the max height of the reptition
 # Is done by identifying when the wrist is at the highest point
@@ -91,7 +93,10 @@ def IdentifyMinofRep(AnalysisArray):
 def AnalyseRepetitions(AnalysisArray):
     #Initiation of start Analysis
     ResultsArray = []
+    GoingUp = True
     SaveFrame, CheckPoint = IdentifyFirstRep(AnalysisArray)
+    if CheckPoint == -1:
+        return 0
     video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_1.jpg")
     # ResultsArray.append(SaveFrame)
     print("Begin Analysis")
@@ -105,8 +110,8 @@ def AnalyseRepetitions(AnalysisArray):
             print("CheckPoint = ", CheckPoint)
             print("len(AnalysisArray)-1  = ", len(AnalysisArray)-1 )
             SaveFrame, CheckPoint = IdentifyMaxofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
-            # if CheckPoint == len(AnalysisArray) -1 :
-            #     return ReptitionCounter
+            if CheckPoint > len(AnalysisArray) -2 :
+                return 0
             video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_2.jpg")
             # ReptitionCounter +=1
             GoingUp = False
@@ -119,16 +124,17 @@ def AnalyseRepetitions(AnalysisArray):
             print("len(AnalysisArray)-1  = ", len(AnalysisArray)-1 )
             print("Test")
             SaveFrame, CheckPoint = IdentifyMinofRep(AnalysisArray[CheckPoint:len(AnalysisArray)-1 ])
-            # if CheckPoint == len(AnalysisArray) -1 :               
-            #     return ReptitionCounter
+            if CheckPoint >= len(AnalysisArray) -1 :
+                return 0
             video_processing_python_files.vp_saveImages.SaveImage(SaveFrame, filename="image_3.jpg")
-            
-            CheckPoint = 1
             print("Going down done)")
+            return 1
+            CheckPoint = 1
+            
         
         print("Up to ", CheckPoint, " / ", len(AnalysisArray) -1 )
 
-    return 1
+    return 0
 
 
 
@@ -165,7 +171,7 @@ def AnalysePose(video_path):
             ret, frame = cap.read()
             
             #Cuts at frame > 200 for processing issues
-            if not ret or frame_number > 20:
+            if not ret or frame_number > 200:
                 print("End of video.")
                 #print("Flag 3")
                 break
@@ -209,9 +215,10 @@ def AnalysePose(video_path):
                 # print("Wrist X = ",landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].x )
                 # print("Wrist Y = ",landmarks[mp_pose.PoseLandmark.LEFT_WRIST.value].y )
 
-                cv2.putText(image, str(round(angle, 2)), 
-                            [500,500],
-                            cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,0), 3, cv2.LINE_AA)
+                # Would show the angle on screen
+                # cv2.putText(image, str(round(angle, 2)), 
+                #             [500,500],
+                #             cv2.FONT_HERSHEY_SIMPLEX, 2, (0,0,0), 3, cv2.LINE_AA)
                 
                 
                 AnalysisArray.append([image, angle, shoulder, elbow, wrist])
@@ -247,8 +254,9 @@ def AnalysePose(video_path):
         ##USE ANALYSIS ARRAY TO CAPTURE EACH FRAME
         AnalyseRepetitions(AnalysisArray)
 
+        ResultsText = [1,2,2,2]
 
-        return AnalysisArray
+        return AnalysisArray, ResultsText
         # AnalysisArray (need to find a way of providing the three frames required), Results (in format of [1,2,2,2])
 
 
@@ -256,5 +264,7 @@ def AnalysePose(video_path):
     # UpdatedArray = AnalysisArray
 
 
-
+#LOCAL
+videoExample = "/Users/seanryan/Downloads"
+AnalysePose(videoExample)
 
