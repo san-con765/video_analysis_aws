@@ -1,5 +1,5 @@
 import numpy as np
-
+ 
 # # Version 2
 def calculate_angle(a, b, c):
     # print("Run Process calculate_angle")
@@ -21,8 +21,9 @@ def calculate_angle(a, b, c):
     angle = np.degrees(angle)
     
     return angle
-
+ 
 # Example usage:
 # a, b, c are tuples or lists containing the x, y (and z if in 3D) coordinates of the shoulder, elbow, and wrist respectively.
 # angle = calculate_angle(a, b, c)
-
+ 
+ 
