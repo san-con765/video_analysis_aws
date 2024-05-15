@@ -2,137 +2,31 @@
 import json
 import os
 import boto3
-
+ 
 # Installed via requirements.txt
 from botocore.exceptions import ClientError
 import numpy as np
-
-
+ 
+ 
 import time
 from typing import List, Tuple
 from urllib.parse import unquote_plus
 from dotenv import load_dotenv
-
+ 
 import cv2
 import mediapipe as mp
-
+import re
+ 
 # Local modules to be include
 import video_processing_python_files.vp_gifCreater
 # import video_processing_python_files.vp_calculateAngle
-import video_processing_python_files.vp_analysePose 
+import video_processing_python_files.vp_analysePose
 import video_processing_python_files.vp_runAnalysis
 import video_processing_python_files.vp_saveImages
 import video_processing_python_files.vp_results_text
-
-def process_video_file(s3_bucket: str, s3_key: str):
-    print("Run Process process_video_files")
-    """
-    Retrieves a video file from an S3 bucket, processes the video, uploads the results
-    (a text file and potentially two GIFs) to another S3 bucket, and then cleans up by deleting
-    the local video and GIF files to free up disk space.
-
-    Args:
-        s3_bucket (str): The name of the S3 bucket where the video file is stored.
-        s3_key (str): The key of the video file in the S3 bucket.
-
-    Returns:
-        None
-    """
-    error_occurred = False # Error flag
-
-    local_filename = '/tmp/' + s3_key.split('/')[-1]
-    gif1 = gif2 = None  # Initialize to ensure scope beyond the try block
-
-    print(f"Processing {s3_key}.......")
-    print("File name = ", local_filename)
-    print("S3 Bucket name = ", s3_bucket)
-    print("S3 Key  = ", s3_key)
-
-    try:
-        s3 = boto3.client('s3', region_name='us-east-1')
-        s3.download_file(s3_bucket, s3_key, local_filename)
-        print(f"Downloaded {s3_key} to {local_filename}")
-        
-    except Exception as e:
-        print(f"Error downloading video: {e}")
-        return
-
-    try:
-        # Placeholder for actual video processing module
-        # TEMP TURN OFF
-        # results_text, images = vp_runAnalysis.process_video(local_filename)
-
-        print("Local File Name = ", local_filename)
-
-        # TEMP TESTING
-        AnalysisArray = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
-        print("Analysis Returned")
-
-        # CREATE ANALYSIS REVIEW AND CREATE TEXT
-        # Expected format[found != 0, top = x, bottom = x, speed = x]
-        # result_text = []
-        # result_text.append([[1][2][1][2]])
-        print("Define result_text")
-        result_text = [[1],[2],[1],[2]]
-
-
-        print("Run Text Results file")        
-        results_text = video_processing_python_files.vp_results_text.textResults(result_text)
-        print("Run Text Results finished")
-        results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
-        
-        ############################
-
-
-        print("Analysis Returned: ", local_filename)
-        # Save 3 images
-        video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[0], filename="image_1.jpg")
-        video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
-        video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
-
-        # Combine Images
-        # images = [AnalysisArray[0], AnalysisArray[1], AnalysisArray[2]]
-        dir = "/home/ec2-user/video_analysis_aws"
-        images = [dir+"/image_1.jpg", dir+"/image_2.jpg", dir+"/image_3.jpg"]
-
-        # Error processing/uploading results for Test Video4.mp4: name 'mp' is not defined
-        # Error polling SQS: name 'results_text' is not defined
-
-
-        # Converts Images into gif
-        # create_gif(image_paths, output_path, duration = 500)
-        results_gif = video_processing_python_files.vp_gifCreater.create_gif(images, "/home/ec2-user/video_analysis_aws/Output_Test.gif")
-        
-        results_gif = "/home/ec2-user/video_analysis_aws/output.gif"
-
-        #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
-        print(f"Processed {s3_key} successfully, results ready to upload.")
-
-        #Write results to text file
-
-        
-        
-        # To reference text file based on results:
-        # results_text = "You're doing great"
-        # TO BE UPDATED
-
-        # Upload results back to another S3 bucket
-        print("Upload Results")
-        upload_results(S3_BUCKET_NAME, s3_key, results_text, results_gif)
-
-    except Exception as e:
-        print(f"Error processing/uploading results for {s3_key}: {e}")
-        error_occurred = True
-        
-    finally: 
-        if error_occurred:
-            print(f"Error Ocurred processing{s3_key}")
-            fail_result = "Something went wrong, try again later."
-            error_gif = "error_gif/try_again_gif.gif"
-            upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)   
-        # Clean up: Delete the local video file and any generated GIFs
-        cleanup_files([local_filename]) #, results_gif])
-
+ 
+ 
+ 
 def cleanup_files(files):
     print("Run Process cleanup_files")
     """ Removes specified files from the filesystem if they exist. """
@@ -143,18 +37,18 @@ def cleanup_files(files):
                 print(f"Deleted {file_path}")
             except Exception as e:
                 print(f"Failed to delete {file_path}: {e}")       
-
+ 
 def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str):
     print("Run Process upload_results")
     """
     Uploads processing results including a text file and two GIFs to an S3 bucket.
-
+ 
     Args:
     bucket_name (str): The name of the S3 bucket where the results will be uploaded.
     base_key (str): The base S3 key of the original video file; used to determine result file names.
     results_text (str): The contents of the result text file.
     gif1 (str): The file path of the first GIF result.
-
+ 
     Returns:
     None
     """
@@ -164,41 +58,184 @@ def upload_results(bucket_name: str, base_key: str, results_text: str, gif1: str
     print("base key " + base_key)
     print("results text " + results_text)
     print("gif1 " + gif1)
-
+ 
     s3 = boto3.client('s3', region_name='us-east-1')
-    result_prefix = base_key[:base_key.rfind('.')]
+    # result_prefix = base_key.replace('.mp4', '')
+    result_prefix = re.sub(r'\.(mp4|mov)$', '', base_key)
     folder_name = result_prefix + '/'
     object_name = f"{folder_name}{result_prefix}"
+ 
   
     try:
         # Write text results
         s3.put_object(Bucket=bucket_name, Key=object_name + '_results.txt', Body=results_text)
         # Write gif results
         s3.upload_file(gif1, bucket_name, object_name + '_1.gif')
-
+ 
         
     except Exception as e:
             print(f"Error uploading video: {e}")
     print(f"Uploaded {object_name + '_results.txt'} sucessfully.......")
-
-
+ 
+ 
+def process_video_file(s3_bucket: str, s3_key: str):
+    print("Run Process process_video_files")
+    """
+    Retrieves a video file from an S3 bucket, processes the video, uploads the results
+    (a text file and potentially two GIFs) to another S3 bucket, and then cleans up by deleting
+    the local video and GIF files to free up disk space.
+ 
+    Args:
+        s3_bucket (str): The name of the S3 bucket where the video file is stored.
+        s3_key (str): The key of the video file in the S3 bucket.
+ 
+    Returns:
+        None
+    """
+    error_occurred = False # Error flag
+ 
+    local_filename = '/tmp/' + s3_key.split('/')[-1]
+    gif1 = gif2 = None  # Initialize to ensure scope beyond the try block
+ 
+    print(f"Processing {s3_key}.......")
+    print("File name = ", local_filename)
+    print("S3 Bucket name = ", s3_bucket)
+    print("S3 Key  = ", s3_key)
+ 
+    try:
+        s3 = boto3.client('s3', region_name='us-east-1')
+        s3.download_file(s3_bucket, s3_key, local_filename)
+        print(f"Downloaded {s3_key} to {local_filename}")
+        
+    except Exception as e:
+        print(f"Error downloading video: {e}")
+        return
+ 
+    try:
+        # Placeholder for actual video processing module
+        # TEMP TURN OFF
+        # results_text, images = vp_runAnalysis.process_video(local_filename)
+ 
+        print("Local File Name = ", local_filename)
+ 
+        # TEMP TESTING
+        
+        AnalysisArray, result_text = video_processing_python_files.vp_analysePose.AnalysePose(local_filename)
+        print("Analysis Returned")
+ 
+        # CREATE ANALYSIS REVIEW AND CREATE TEXT
+        # Expected format[found != 0, top = x, bottom = x, speed = x]
+        # result_text = []
+        # result_text.append([[1][2][1][2]])
+        
+        print("Define result_text")
+ 
+ 
+        print("Run Text Results file")        
+        results_text_output = video_processing_python_files.vp_results_text.textResults(result_text)
+        print("Run Text Results finished")
+        # results_text = "Score: 50/100 \n \n Good job! You're on your way to improve your shoulder mobility.\n Areas for Imrpovement \n To improve try to ...\n- 21Keep your...\n- 33Keep your..."
+        
+        ############################
+ 
+ 
+        print("Analysis Returned: ", local_filename)
+        # Save 3 images
+        try:
+            #Save images
+            
+            # print("Save Images 1")
+            # video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[1], filename="image_2.jpg")
+            # video_processing_python_files.vp_saveImages.SaveImage(AnalysisArray[2], filename="image_3.jpg")
+ 
+            #Create gif
+            # Combine Images
+            # images = [AnalysisArray[0], AnalysisArray[1], AnalysisArray[2]]
+            print("Start to create gif")
+            dir = "/home/ec2-user/video_analysis_aws"
+            images = [dir+"/image_1.jpg", dir+"/image_2.jpg", dir+"/image_3.jpg"]
+ 
+            
+ 
+            #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
+            print(f"Processed {s3_key} successfully, results ready to upload.")
+ 
+            # To reference text file based on results:
+            # results_text = "You're doing great"
+            # TO BE UPDATED
+ 
+            # Upload results back to another S3 bucket
+            print("Upload Results")
+            upload_results(S3_BUCKET_NAME, s3_key, results_text_output, results_gif)
+ 
+            #Clean
+            # List files to be cleaned up
+            print("Try to clean up")
+            cleanup_files(images)
+ 
+            
+        except:
+            print("Failure to save images")
+ 
+ 
+ 
+        # Converts Images into gif
+        # create_gif(image_paths, output_path, duration = 500)
+        results_gif = video_processing_python_files.vp_gifCreater.create_gif(images, "/home/ec2-user/video_analysis_aws/Output_Test.gif")
+        
+        results_gif = "/home/ec2-user/video_analysis_aws/output.gif"
+ 
+ 
+        #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
+        print(f"Processed {s3_key} successfully, results ready to upload.")
+ 
+        #Write results to text file
+ 
+        
+        
+        # To reference text file based on results:
+        # results_text = "You're doing great"
+        # TO BE UPDATED
+ 
+        # Upload results back to another S3 bucket
+        print("Upload Results")
+        upload_results(S3_BUCKET_NAME, s3_key, results_text, results_gif)
+ 
+    except Exception as e:
+        print(f"Error processing/uploading results for {s3_key}: {e}")
+        error_occurred = True
+        
+    finally:
+        if error_occurred:
+            print(f"Error Ocurred processing{s3_key}")
+            fail_result = "Something went wrong, try again later."
+            error_gif = "error_gif/try_again_gif.gif"
+            upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)   
+        # Clean up: Delete the local video file and any generated GIFs
+        cleanup_files([local_filename]) #, results_gif])
+ 
+ 
+#ONLINE
 load_dotenv()
-
+ 
 # Access environment variables
 S3_BUCKET_NAME = os.getenv('AWS_S3_BUCKET_NAME')
 SQS_QUEUE_URL = os.getenv('AWS_SQS_QUEUE_URL')
-
-
-
+ 
+# #LOCAL
+# videoExample = "/Users/seanryan/Downloads"
+ 
+ 
+ 
 if __name__ == '__main__':
     print("Run main")
     # The URL of the SQS queue from which messages are received
     # Create SQS client
     sqs = boto3.client('sqs', region_name='us-east-1')
-
+ 
     # Specify your queue URL
     sqs_queue_url = SQS_QUEUE_URL
-
+ 
     # Continuously poll the queue for new messages
     while True:
         try:
@@ -229,7 +266,7 @@ if __name__ == '__main__':
                         )
                     except Exception as e:
                         print(f"Something went wrong with {object_key}: {e}")
-
+ 
         except Exception as e:
             print(f"Something went wrong: {e}")
             time.sleep(10)  # Wait a bit before retrying to avoid flooding logs with error messages
