@@ -144,15 +144,17 @@ def process_video_file(s3_bucket: str, s3_key: str):
         upload_results(S3_BUCKET_NAME, s3_key, results_text_output, results_gif)
  
     except Exception as e:
-        print(f"Error processing/uploading results for {s3_key}: {e}")
         error_occurred = True
-        
-    finally:
+        print(f"Error processing/uploading results for {s3_key}: {e}")
+        print(error_occurred)
         if error_occurred:
             print(f"Error Ocurred processing{s3_key}")
             fail_result = "Something went wrong, try again later."
             error_gif = "error_gif/try_again_gif.gif"
-            upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)   
+            upload_results(S3_BUCKET_NAME, object_key, fail_result, error_gif)  
+        
+    finally:
+ 
         # Clean up: Delete the local video file and any generated GIFs
         print("Try to clean up")
         cleanup_files([local_filename])
