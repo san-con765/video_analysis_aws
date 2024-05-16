@@ -24,11 +24,9 @@ import io
  
 ######################################################
 # Create gif based on image paths
-def create_gif(image, inputImagesPath, duration = 500):
+def create_gif(inputImagesPath, duration = 500):
     print("Run Process create_gif")
-    print("Items provided are")
-    print("input Images Path is")
-    print(inputImagesPath)
+    
 
     # for i in range(0, len(inputImagesPath)):
     #     print(inputImagesPath[i])
