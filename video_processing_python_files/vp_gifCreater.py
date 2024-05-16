@@ -27,8 +27,12 @@ import io
 def create_gif(image, inputImagesPath, duration = 500):
     print("Run Process create_gif")
     print("Items provided are")
-    for i in range(0, len(inputImagesPath)):
-        print(inputImagesPath[i])
+    print("input Images Path is")
+    print(inputImagesPath)
+
+    # for i in range(0, len(inputImagesPath)):
+    #     print(inputImagesPath[i])
+        
     images = []
     print("Gif failure point 1")
     
