@@ -131,6 +131,11 @@ def process_video_file(s3_bucket: str, s3_key: str):
         dir = "/home/ec2-user/video_analysis_aws"
         images = [dir+"/image_1.jpg", dir+"/image_2.jpg", dir+"/image_3.jpg"]
 
+        print("images testing")
+        print(images)
+        for i in range(len(images)):
+            print(images[i])
+        
         #results_text, gif1, gif2 = 'dummy results text', '/tmp/dummy1.gif', '/tmp/dummy2.gif'
         print(f"Processed {s3_key} successfully, results ready to upload.")
  
